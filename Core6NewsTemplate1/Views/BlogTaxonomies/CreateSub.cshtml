@@ -1,0 +1,37 @@
+﻿@model WebOS.Models.BlogTaxonomy
+
+@{
+    ViewData["Title"] = "إضافة قسم فرعي إلى القسم "+ViewData["taxonomyname"];
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<h4>إضافة قسم فرعي إلى القسم "@ViewData["taxonomyname"]"</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateSub">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3" hidden>
+                <label asp-for="Sub" class="control-label"></label>
+                <input value="@ViewData["tid"]" asp-for="Sub" class="form-control" />
+                <span asp-validation-for="Sub" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="إضافة" class="rounded-0 btn btn-success" />
+                <a class="rounded-0 btn btn-primary" asp-action="Index" asp-controller="BlogTaxonomies" asp-route-id="@Context.Request.Query["tid"]">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

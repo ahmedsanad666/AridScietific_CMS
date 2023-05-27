@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IdentityRole
+
+@{
+    ViewData["Title"] = "هل تريد حذف دور "+Model.Name+" بالفعل؟";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<h3>هل تريد حذف دور "@Model.Name" بالفعل؟</h3>
+<div>
+    <input type="hidden" asp-for="Id" />
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="rounded-0 btn btn-secondary btn-danger" />
+            <a class="btn btn-secondary rounded-0" asp-action="Index">رجوع</a>
+        </div>
+    </form>
+</div>
+</div>

@@ -1,0 +1,61 @@
+﻿@model WebOS.Models.NavMenuItem
+
+@{
+    ViewData["Title"] = "التعديل على العنصر";
+}
+
+            <partial name="_ViewHeader" />
+<h4>التعديل على العنصر "@Model.Name"</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="NavMenuId" class="control-label"></label>
+                <select asp-for="NavMenuId" class="form-control" asp-items="ViewBag.NavMenuId"></select>
+                <span asp-validation-for="NavMenuId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnName" class="control-label"></label>
+                <input asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Icon" class="control-label"></label>
+                <input asp-for="Icon" class="form-control" />
+                <span asp-validation-for="Icon" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="indx" class="control-label"></label>
+                <input asp-for="indx" class="form-control" />
+                <span asp-validation-for="indx" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="حفظ" class="btn btn-success rounded-0" />
+                <a class="btn btn-primary rounded-0" asp-action="Details" asp-controller="NavMenus" asp-route-id="@Model.NavMenuId">رجوع</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

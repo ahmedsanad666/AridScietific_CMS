@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebOS", "Core6NewsTemplate1\WebOS.csproj", "{A587F165-949B-49DD-9839-1E3D61335B34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A587F165-949B-49DD-9839-1E3D61335B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A587F165-949B-49DD-9839-1E3D61335B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A587F165-949B-49DD-9839-1E3D61335B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A587F165-949B-49DD-9839-1E3D61335B34}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {86B8BAC6-3350-4937-9126-572EAAC7E8C6}
+	EndGlobalSection
+EndGlobal

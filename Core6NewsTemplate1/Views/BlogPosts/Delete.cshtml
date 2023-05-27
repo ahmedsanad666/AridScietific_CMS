@@ -1,0 +1,114 @@
+﻿@model WebOS.Models.BlogPost
+
+@{
+    ViewData["Title"] = "هل أنت متأكد من حذف "+ Model.Title;
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+<h3>هل أنت متأكد من حذف "@Model.Title"</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Body)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Introduction)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Introduction)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PostDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PostDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateModified)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateModified)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            <img height="200" width="200" class="img-fluid rounded" src="~/images/@Model.Image" />
+            @*@Html.DisplayFor(model => model.Image)*@
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Source)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Source)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.File)
+        </dt>
+        <dd class="col-sm-10">
+            <a href="~/Files/@Model.File">الملف المرفق</a>
+            @*@Html.DisplayFor(model => model.File)*@
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-action="details" asp-controller="ApplicationUsers"></a>@Html.DisplayFor(model => model.ApplicationUser.ArName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tags)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BlogTaxonomy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BlogTaxonomy.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Reads)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Reads)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsHidden)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsHidden)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsFeatured)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsFeatured)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger rounded-0" /> 
+        <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+    </form>
+</div>
+</div>

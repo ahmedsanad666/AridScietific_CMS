@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<WebOS.Models.Notification>
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@{
+    ViewData["Title"] = "الإشعارات";
+}
+@foreach (var item in Model.OrderByDescending(a => a.CreationDate))
+{
+    if (item.IsRead)
+    {
+        <div style="margin-right:5px"><div class="noty-manager-list-item noty-manager-list-item-error"><div class="">  <div class="activity"> <a href="@item.Url">@item.Content</a>  <span>@Common.GetDate(item.CreationDate)</span> </div> </div></div></div>
+    }
+    else
+    {
+        <div style="margin-right:5px"><div class="noty-manager-list-item noty-manager-list-item-error"><div class="">  <div class="activity"> <a name="@item.Id" class="unreadnotification text-danger" href="@*@item.Url*@">@item.Content</a> <span>@Common.GetDate(item.CreationDate)</span> </div> </div></div></div>
+    }
+    <hr />
+}
+@if (Model.Count() == 0)
+{
+    <div style=""><div class="noty-manager-list-item noty-manager-list-item-error"><div class="activity-item text-danger">  <div class="activity"> <a name="" class="" href="">لا توجد إشعارات</a> <span></span> </div> </div></div></div>
+}
+@section scripts{
+}

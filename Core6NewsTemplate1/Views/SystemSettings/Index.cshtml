@@ -1,0 +1,181 @@
+﻿@model IEnumerable<WebOS.Models.SystemSettings>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_ViewHeader" />
+
+<div class="px-5">
+
+    <h1>الاعدادات</h1>
+    <p>
+        <a class="text-primary" asp-action="Create">اضافة جديد</a>
+    </p>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AraName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EngName)
+                    </th>
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.SmallLogo)
+                    </th>
+                    <th>
+                    @Html.DisplayNameFor(model => model.LargeLogo)
+                    </th>
+                    <th>
+                    @Html.DisplayNameFor(model => model.FavIcon)
+                    </th>
+                    <th>
+                    @Html.DisplayNameFor(model => model.Footer)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.AdminEmail)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LaunchDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FB)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Twitter)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Linkedin)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Youtube)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Instagram)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastUpate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.About)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnAbout)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Vision)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnVision)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnAddress)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProjectsNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.VolunteersNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeesNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BeneficiariesNumber)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AraName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EngName)
+                        </td>
+                        @* <td>
+                    <img src="~/Files/@item.SmallLogo">
+                    </td>
+                    <td>
+                    <img src="~/Files/@item.LargeLogo">
+                    </td>
+                    <td>
+                    <img src="~/Files/@item.FavIcon">
+                    </td>
+                    <td>
+                    <img src="~/Files/@item.Footer">
+                    </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AdminEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LaunchDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FB)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Twitter)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Linkedin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Youtube)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Instagram)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.About)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnAbout)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Vision)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnVision)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnAddress)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.ProjectsNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.VolunteersNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.EmployeesNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.BeneficiariesNumber)
+                        </th>
+
+                        <td>
+                            <a class="text-dark" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                     @*       <a class="text-dark" asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                       @*     <a class="text-dark" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

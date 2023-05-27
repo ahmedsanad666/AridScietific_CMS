@@ -1,0 +1,35 @@
+﻿@model WebOS.Models.Page
+
+@{
+    ViewData["Title"] = "هل أنت متاكد من حذف الصفحة";
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<partial name="_ViewHeader" />
+<h3>هل أنت متاكد من حذف الصفحة "@Model.Title"</h3>
+<div>
+    <h4>Page</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger rounded-0" /> 
+        <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+    </form>
+</div>
+</div>

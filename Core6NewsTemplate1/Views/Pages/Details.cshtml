@@ -1,0 +1,191 @@
+﻿@model WebOS.Models.Page
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@{
+        ViewData["Title"] = "Details";
+
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+<div>
+        @if (culture.Name == "en")
+        {
+            <h4> @Html.DisplayFor(model => model.EnTitle)</h4>
+            <hr />
+            <p>@Html.Raw(Model.EnBody)</p>
+        }
+        else
+        {
+            <h4> @Html.DisplayFor(model => model.Title)</h4>
+            <hr />
+            <p>@Html.Raw(Model.Body)</p>
+        }
+    </div>
+
+</div>
+@section scripts{
+    <script>
+$("img").addClass("img-fluid");
+        $("iframe").addClass("embed-responsive-item");
+        $("iframe").attr("width", "100%");
+
+    </script>
+}
+@*<div class="holder">
+        <form asp-action="UploadAudioFile" enctype="multipart/form-data">
+            <input type="file" name="myfile"/><br />
+            <input type="submit"  value="رفع"/>
+        </form>
+        <div data-role="controls">
+            <button id="recButton">Record</button>
+        </div>
+        <div data-role="recordings"></div>
+        <audio controls>ssss</audio>
+    </div>
+    <link rel="icon" type="image/png" href="https://stephino.github.io/dist/favicon.png" />
+    <style type="text/css">
+    button {
+        width: 35px;
+        height: 35px;
+        font-size: 0;
+        background-color: red;
+        border: 0;
+        border-radius: 35px;
+        margin: 18px;
+        outline: none;
+    }
+
+    .notRec{
+        background-color: darkred;
+    }
+
+    .Rec{
+        animation-name: pulse;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    @@keyframes pulse{
+        0%{
+            box-shadow: 0px 0px 5px 0px rgba(173,0,0,.3);
+        }
+        65%{
+            box-shadow: 0px 0px 5px 13px rgba(173,0,0,.3);
+        }
+        90%{
+            box-shadow: 0px 0px 5px 13px rgba(173,0,0,0);
+        }
+    }
+    </style>
+    @section scripts{
+        <script>
+            $('#recButton').addClass("notRec");
+
+            $('#recButton').click(function () {
+                if ($('#recButton').hasClass('notRec')) {
+                    $('#recButton').removeClass("notRec").addClass("Rec");
+                }
+                else {
+                    $('#recButton').removeClass("Rec").addClass("notRec");
+                }
+            });
+        </script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+        <script src="https://stephino.github.io/dist/recorder.js"></script>
+        <script>
+            jQuery(document).ready(function () {
+                var $ = jQuery;
+                var myRecorder = {
+                    objects: {
+                        context: null,
+                        stream: null,
+                        recorder: null
+                    },
+                    init: function () {
+                        if (null === myRecorder.objects.context) {
+                            myRecorder.objects.context = new (
+                                window.AudioContext || window.webkitAudioContext
+                            );
+                        }
+                    },
+                    start: function () {
+                        var options = { audio: true, video: false };
+                        navigator.mediaDevices.getUserMedia(options).then(function (stream) {
+                            myRecorder.objects.stream = stream;
+                            myRecorder.objects.recorder = new Recorder(
+                                myRecorder.objects.context.createMediaStreamSource(stream),
+                                { numChannels: 1 }
+                            );
+                            myRecorder.objects.recorder.record();
+                        }).catch(function (err) { });
+                    },
+                    stop: function (listObject) {
+                        if (null !== myRecorder.objects.stream) {
+                            myRecorder.objects.stream.getAudioTracks()[0].stop();
+                        }
+                        if (null !== myRecorder.objects.recorder) {
+                            myRecorder.objects.recorder.stop();
+
+                            // Validate object
+                            if (null !== listObject
+                                && 'object' === typeof listObject
+                                && listObject.length > 0) {
+                                // Export the WAV file
+                                myRecorder.objects.recorder.exportWAV(function (blob) {
+                                    var url = (window.URL || window.webkitURL)
+                                        .createObjectURL(blob);
+
+                                    // Prepare the playback
+                                    var audioObject = $('<audio controls></audio>')
+                                        .attr('src', url);
+
+                                    // Prepare the download link
+                                    var downloadObject = $('<a>&#9660;</a>')
+                                        .attr('href', url)
+                                        .attr('download', new Date().toUTCString() + '.wav');
+
+                                    // Wrap everything in a row
+                                    var holderObject = $('<div class="row"></div>')
+                                        .append(audioObject)
+                                        .append(downloadObject);
+                                        blob
+
+                                    // Append to the list
+                                    listObject.append(holderObject);
+                                });
+                            }
+                        }
+                    }
+                };
+
+                // Prepare the recordings list
+                var listObject = $('[data-role="recordings"]');
+
+                // Prepare the record button
+                $('[data-role="controls"] > button').click(function () {
+                    // Initialize the recorder
+                    myRecorder.init();
+
+                    // Get the button state
+                    var buttonState = !!$(this).attr('data-recording');
+
+                    // Toggle
+                    if (!buttonState) {
+                        $(this).attr('data-recording', 'true');
+                        myRecorder.start();
+                    } else {
+                        $(this).attr('data-recording', '');
+                        myRecorder.stop(listObject);
+                    }
+                });
+            });
+        </script>
+    }*@

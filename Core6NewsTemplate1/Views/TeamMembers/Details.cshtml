@@ -1,0 +1,31 @@
+﻿@model WebOS.Models.TeamMember
+
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EnName)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BriefDescription)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EnBriefDescription)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Job)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EnJob)
+        </dd>
+        <dd class="col-sm-10">
+            <img src="/Pictures/@Model.Image" class="img-fluid" />
+        </dd>
+    </dl>
+</div>

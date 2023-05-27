@@ -1,0 +1,44 @@
+﻿@model WebOS.Models.TicketReply
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h3>هل أنت متأكد من حذف هذا الرد</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TicketId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReplyDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReplyDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SupportUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SupportUser.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn-sm btn-danger rounded-0" />
+        <a class="btn-primary btn-sm rounded-0" asp-action="Index">رجوع</a>
+    </form>
+</div>

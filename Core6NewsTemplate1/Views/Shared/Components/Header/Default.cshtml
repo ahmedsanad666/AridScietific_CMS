@@ -1,0 +1,94 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+@if (@Model.SystemSettings != null)
+{
+    <div class="top-bar text-white-50 row gx-0 align-items-center d-none d-lg-flex">
+        <div class="col-lg-6 px-5 text-end d-flex align-items-center">
+            <small>
+                <i class="fa fa-map-marker-alt me-2"></i>@if (culture.Name == "en")
+                {
+                    @Model.SystemSettings.EnAddress
+                }
+                else
+                {
+                    @Model.SystemSettings.Address
+                }
+            </small>
+            <small class="ms-4"><i class="fa fa-envelope mx-2"></i> @Model.SystemSettings.AdminEmail</small>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <small class="ms-4"><a asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a></small>
+            }
+            else
+            {
+                <form class="" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button style="border:none;background:none;color:white" title="LogOut" type="submit" class="rounded-0 text-dark"><small class="ms-4">@Localizer["LogOut"]</small></button>
+                </form>
+            }
+        </div>
+        <div class="col-lg-6 px-5 text-start">
+            <small>@Localizer["Follow Us"]:</small>
+            @if (Model.SystemSettings.FB != null)
+            {
+                <a class="text-white-50 ms-3" href="@Model.SystemSettings.FB"><i class="fab fa-facebook-f"></i></a>
+            }
+            @if (Model.SystemSettings.Twitter != null)
+            {
+                <a class="text-white-50 ms-3" href="@Model.SystemSettings.Twitter"><i class="fab fa-twitter"></i></a>
+            }
+            @if (Model.SystemSettings.Linkedin != null)
+            {
+                <a class="text-white-50 ms-3" href="@Model.SystemSettings.Linkedin"><i class="fab fa-linkedin-in"></i></a>
+            }
+            @if (Model.SystemSettings.Instagram != null)
+            {
+                <a class="text-white-50 ms-3" href="@Model.SystemSettings.Instagram"><i class="fab fa-instagram"></i></a>
+            }
+            @if (Model.SystemSettings.Youtube != null)
+            {
+                <a class="text-white-50 ms-3" href="@Model.SystemSettings.Youtube"><i class="fab fa-youtube"></i></a>
+            }
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="top-bar text-white-50 row gx-0 align-items-center d-none d-lg-flex">
+        <div class="col-lg-6 px-5 text-end d-flex align-items-center">
+            <small>
+                <i class="fa fa-map-marker-alt me-2"></i>@if (culture.Name == "en")
+                {
+                    @*                    @Model.SystemSettings.EnAddress
+            *@  }
+                else
+                {
+                    @*                    @Model.SystemSettings.Address
+            *@  }
+            </small>
+            <small class="ms-4"><i class="fa fa-envelope mx-2"></i>@* @Model.SystemSettings.AdminEmail*@</small>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <small class="ms-4"><a asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a></small>
+            }
+            else
+            {
+                <form class="" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button style="border:none;background:none" title="خروج" type="submit" class="rounded-0 text-dark"><small class="ms-4">@Localizer["LogOut"]</small></button>
+                </form>
+            }
+        </div>
+        <div class="col-lg-6 px-5 text-start">
+            <small>@Localizer["Follow Us"]:</small>        <a class=" ms-3" asp-action="Control" asp-controller="ApplicationUsers">Admin</a>
+            @*            <a class="text-white-50 ms-3" href="@Model.SystemSettings.FB"><i class="fab fa-facebook-f"></i></a>
+        <a class="text-white-50 ms-3" href="@Model.SystemSettings.Twitter"><i class="fab fa-twitter"></i></a>
+        <a class="text-white-50 ms-3" href="@Model.SystemSettings.Linkedin"><i class="fab fa-linkedin-in"></i></a>
+        <a class="text-white-50 ms-3" href="@Model.SystemSettings.Instagram"><i class="fab fa-instagram"></i></a>
+        *@
+        </div>
+    </div>
+}

@@ -1,0 +1,31 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer;
+@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> locOptions;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Webculture = System.Globalization.CultureInfo.CurrentCulture;
+    var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+    var cultureList = locOptions.Value.SupportedUICultures.Select(x => new SelectListItem { Value = x.Name, Text = localizer.GetString(x.Name) });
+    var returnUrl = string.IsNullOrWhiteSpace(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString}";
+}
+<div class="px-2">
+    @if (Webculture.Name == "en")
+    {
+        <form asp-route-returnUrl="@returnUrl" asp-controller="Home" asp-action="CultureManagement">
+            <input type="hidden"  value="ar-IQ"  name="culture" />
+            <input class="btn-sm btn btn-primary" value="عربي"  type="submit" />
+        </form>
+    }
+    else
+    {
+        <form asp-route-returnUrl="@returnUrl" asp-controller="Home" asp-action="CultureManagement">
+            <input type="hidden"  value="en"  name="culture" />
+            <input class="btn-sm btn btn-primary" value="EN"  type="submit" />
+        </form>
+    }
+    @*  <form asp-route-returnUrl="@returnUrl" asp-controller="Home" asp-action="CultureManagement">
+            <select onchange="this.form.submit();" asp-for="@culture.RequestCulture.UICulture.Name" asp-items="cultureList" name="culture"></select>
+        </form>*@
+
+    </div>

@@ -1,0 +1,77 @@
+﻿@model WebOS.Models.Page
+@{
+    ViewData["Title"] = "التعديل على الصفحة";
+}
+<partial name="_ViewHeader" />
+
+
+<div class="px-5">
+
+<h4>التعديل على الصفحة</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnTitle" class="control-label"></label>
+                <input asp-for="EnTitle" class="form-control" />
+                <span asp-validation-for="EnTitle" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Body" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Body, new { rows = 10, cols = 50, @class = "form-control" })
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnBody" class="control-label"></label>
+                @Html.TextAreaFor(model => model.EnBody, new { rows = 10, cols = 50, @class = "form-control" })
+                <span asp-validation-for="EnBody" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PageName" class="control-label"></label>
+                <input asp-for="PageName" class="form-control" />
+                <span asp-validation-for="PageName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="حفظ" class="btn btn-success rounded-0" />
+                <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+
+
+
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link,image,media,table,textcolor colorpicker",
+
+            //menubar: "insert",
+            toolbar: "link,image,media,table,forecolor backcolor",
+            color_picker_callback: function (callback, value) {
+                callback('#FF00FF');
+            },
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+
+            mode: "textareas",
+
+            //plugins: "table,contextmenu,paste,-externalplugin"
+
+        });</script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+}

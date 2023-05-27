@@ -1,0 +1,120 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+<!-- Footer Start -->
+@if (Model.SystemSettings != null)
+{
+    <div class="container-fluid footer text-white-50 footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container ">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h1 class="fw-bold text-primary mb-4">
+                        @if (culture.Name == "en")
+                        {
+                            @Model.SystemSettings.EngName
+                        }
+                        else
+                        {
+                            @Model.SystemSettings.AraName
+                        }<span class="text-white"></span>
+                    </h1>
+                    @if (culture.Name == "en")
+                    {
+                        <p>@Model.SystemSettings.EnAbout</p>
+
+
+                    }
+                    else
+                    {
+                        <p>@Model.SystemSettings.About</p>
+                    }
+
+                    <div class="d-flex pt-2">
+                        @if (Model.SystemSettings.Twitter != null)
+                        {
+                            <a class="btn btn-square me-1" href="@Model.SystemSettings.Twitter"><i class="fab fa-twitter"></i></a>
+                        }
+                        @if (Model.SystemSettings.FB != null)
+                        {
+                            <a class="btn btn-square me-1" href="@Model.SystemSettings.FB"><i class="fab fa-facebook-f"></i></a>
+                        }
+                        @if (Model.SystemSettings.Youtube != null)
+                        {
+                            <a class="btn btn-square me-1" href="@Model.SystemSettings.Youtube"><i class="fab fa-youtube"></i></a>
+                        }
+                        @if (Model.SystemSettings.Linkedin != null)
+                        {
+                            <a class="btn btn-square me-0" href="@Model.SystemSettings.Linkedin"><i class="fab fa-linkedin-in"></i></a>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">@Localizer["Adresses"]</h5>
+                    <p>
+                        <i class="fa fa-map-marker-alt me-3"></i>@if (culture.Name == "en")
+                        {
+                            @Model.SystemSettings.EnAddress
+                        }
+                        else
+                        {
+                            @Model.SystemSettings.Address
+                        }
+                    </p>
+                    <p><i class="fa fa-phone-alt me-3"></i>@Model.SystemSettings.Phone</p>
+                    <p><i class="fa fa-envelope me-3"></i>@Model.SystemSettings.AdminEmail</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">@Localizer["Quick Links"]</h5>
+                    @if (culture.Name == "en")
+                    {
+                        @foreach (var item in Model.NavMenus)
+                        {
+                            <a class="btn btn-link" href="@item.Url">@item.EnName</a>
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.NavMenus)
+                        {
+                            <a class="btn btn-link" href="@item.Url">@item.Name</a>
+                        }
+                    }
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">@Localizer["News Letter"]</h5>
+                    <p>@Localizer["Contact us by entert your Email"]</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="@Localizer["Email"]">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">@Localizer["Subscribe"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        @if (culture.Name == "en")
+                        {
+                            <p> &copy; <a href="#">@Model.SystemSettings.EngName</a>, @Localizer["All Right Reserved"].</p>
+
+
+                        }
+                        else
+                        {
+                            <p> &copy; <a href="#">@Model.SystemSettings.AraName</a>, @Localizer["All Right Reserved"].</p>
+                        }
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        @*                    Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                    *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

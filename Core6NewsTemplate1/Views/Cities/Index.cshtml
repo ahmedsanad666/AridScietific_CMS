@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebOS.Models.City>
+
+@{
+    ViewData["Title"] = "المدن التابعة لدولة" + ViewData["countryname"];
+}
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+<h4>المدن التابعة لدولة "@ViewData["countryname"]"</h4>
+
+<p>
+    <a class="btn btn-success rounded-0" asp-action="Create" asp-route-cid="@Context.Request.Query["cid"]">إضافة مدينة</a>
+</p>
+<table class="table bg-white table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArCityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnCityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.onepageofcities)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@item.ArCityName</a>
+
+                </td>
+                <td>
+                    @item.EnCityName
+                </td>
+                <td>
+                    @item.Country.ArCountryName
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-pen"></span></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<span class="pager">
+    @Html.PagedListPager((IPagedList)ViewBag.onepageofcities, page => Url.Action("Index", new { page, cid = Context.Request.Query["cid"] }),
+       new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+       {
+           //DisplayItemSliceAndTotal=true,
+           ContainerDivClasses = new[] { "navigation" },
+           LiElementClasses = new[] { "page-item rounded-0" },
+           PageClasses = new[] { "page-link rounded-0" }
+       }
+         )
+</span>
+
+<a asp-action="Index" asp-controller="Countries" class="btn btn-primary rounded-0">رجوع</a>
+

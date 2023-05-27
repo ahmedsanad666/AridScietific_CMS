@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ApplicationUser currentuser = await UserManager.GetUserAsync(User);
+}
+<ul class="ullogin">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="lilogin">
+            @if (currentuser.ImageProfile != null)
+            {
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="@currentuser.ArName" class="">
+
+                    <img  class="border imglogin rounded-circle position-relative" src="~/ProfileImages/@currentuser.ImageProfile" />
+                </a>@*<a class="text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @currentuser.ArName</a>*@
+            }
+            else
+            {
+                <a style="font-size:12px;" asp-area="Identity" asp-page="/Account/Manage/Index" title="@currentuser.ArName" class="">
+                    أهلا @currentuser.ArName.Split()[0]
+                </a>@*<a class="text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @currentuser.ArName</a>*@
+            }
+        </li>
+        <li class="lilogin">
+            <form class="" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button style="border:none;background:none" title="خروج" type="submit" class="rounded-0 text-dark">out</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="lilogin">
+            <a class="font-weight-bold text-dark" asp-area="Identity" asp-page="/Account/Register">تسجيل</a>
+        </li>
+        <li class="lilogin">
+            <a class="font-weight-bold text-dark" asp-area="Identity" asp-page="/Account/Login">دخول</a>
+        </li>
+    }
+</ul>

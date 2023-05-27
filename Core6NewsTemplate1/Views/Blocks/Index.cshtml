@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebOS.Models.Block>
+
+@{
+    ViewData["Title"] = "ال Blocks";
+}
+
+<h4>إدارة التذييل السفلي</h4>
+
+<p>
+    <a class="btn btn-success rounded-0" asp-action="Create">إضافة  block</a>
+</p>
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlockLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlockLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                <a asp-action="Index" asp-controller="BlockItems" asp-route-id="@item.Id"><span class="fa fa-list"></span></a>
+                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

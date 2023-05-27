@@ -1,0 +1,51 @@
+﻿@model WebOS.Models.Ticket
+
+@{
+    ViewData["Title"] = "هل بالفعل تريد حذف التذكرة";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>هل بالفعل تريد حذف التذكرة"@Model.Subject"</h4>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd>
+            @Html.Raw(Model.Body)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketOpenDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TicketOpenDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketCloseDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TicketCloseDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+       
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger rounded-0" /> 
+        <a class="btn btn-primary rounded-0" asp-action="List">رجوع</a>
+    </form>
+</div>

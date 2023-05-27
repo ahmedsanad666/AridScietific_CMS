@@ -1,0 +1,65 @@
+﻿@model WebOS.Models.GalleryImage
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>GalleryImage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="GalleryCategoryId" class="control-label"></label>
+                <select asp-for="GalleryCategoryId" class="form-control" asp-items="ViewBag.GalleryCategoryId"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3" id="img">
+                <label asp-for="Url" class="control-label"></label>*<br />
+                <img width="400" height="300" id="img1" class="img-rounded center-block" src="" />
+                <input required type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                <input placeholder="هذا الحقل ضروري" readonly asp-for="Url" id="fileinput" class="form-control input-sm" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#img1').hide();
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    $('#img1').fadeIn();
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+   
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

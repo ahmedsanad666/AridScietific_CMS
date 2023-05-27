@@ -1,0 +1,104 @@
+﻿@model IEnumerable<WebOS.Models.Cause>
+
+@{
+    ViewData["Title"] = "تعديل حالة";
+}
+
+
+
+<partial name="_ViewHeader" />
+<div class="row">
+    <div class="col-md-4">
+        <a asp-action="Create" asp-controller="CauseCategories">اضافة قسم</a>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                           الوصف
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Image)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.CauseCategory)
+                    {
+                        <tr>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @item.Description
+                            </td>
+                            <td>
+                                <img class="w-25 h-25" src="/Pictures/@item.Image" />
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="CauseCategories" asp-route-id="@item.Id">Edit</a> |
+                                <form  asp-controller="CauseCategories" asp-action="Delete">
+                                    <input type="hidden" name="Id" value="@item.Id" />
+                                    <input type="submit" value="Delete" class="btn btn-danger" /> |
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+
+        <p>
+            <a asp-action="Create">إضافة حالة جديدة</a>
+        </p>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EnTitle)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Image)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EnTitle)
+                            </td>
+                            <td>
+                                <img width="100" class="img-fluid" src="/Pictures/@item.Image" />
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+                                @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                                <form asp-action="Delete">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="submit" value="حذف" class="" /> |
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

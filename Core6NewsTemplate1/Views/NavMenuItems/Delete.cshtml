@@ -1,0 +1,49 @@
+﻿@model WebOS.Models.NavMenuItem
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<partial name="_ViewHeader" />
+<h3>هل أنت متأكد من حذف هذا العنصر"@Model.Name"</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NavMenu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NavMenu.Name)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.indx)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.indx)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger rounded-0" /> |
+        <a class="btn btn-primary rounded-0" asp-action="Details" asp-controller="NavMenus" asp-route-id="@Model.NavMenuId">رجوع</a>
+    </form>
+</div>

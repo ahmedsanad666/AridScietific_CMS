@@ -1,0 +1,177 @@
+﻿@model ApplicationUser
+@{
+    ViewData["title"] = "إدارة الموقع";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+<div class="row">
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-controller="SystemSettings" asp-action="Edit" asp-route-id="@ViewData["systemSettingId"]" class="nav-item nav-link">
+            <div class="" style="width: 12rem;height:12rem;padding:20px">
+                <div class="card-body text-center">
+                        <span class="fa text-info fa-cogs fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">الاعدادات</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-controller="Testimonials" asp-action="Index" class="nav-item nav-link">
+            <div class="" style="width: 12rem;height:12rem">
+                <div class="card-body text-center">
+                        <span class="fa text-info fa-certificate fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">الشركاء</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-controller="TeamMembers" asp-action="Index" class="nav-item nav-link">
+            <div class="" style="width: 12rem;height:12rem">
+                <div class="card-body text-center">
+                        <span class="fa text-info fa-users fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">الفريق</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-controller="Sliders" asp-action="Index" class="nav-item nav-link">
+            <div class="" style="width: 12rem;height:12rem">
+                <div class="card-body text-center">
+                        <span class="fa text-info fa-laptop fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">صور الواجهة</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-controller="Services" asp-action="Index" class="nav-item nav-link">
+            <div class="" style="width: 12rem;height:12rem">
+                <div class="card-body text-center">
+                        <span class="fa text-info fa-briefcase fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">الخدمات</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-controller="Causes" asp-action="Index" class="nav-item nav-link">
+            <div class="" style="width: 12rem;height:12rem">
+                <div class="card-body text-center">
+                    <span class="fa text-info fa-list fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">المشاريع</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-action="Index" asp-controller="ApplicationUsers">
+            <div class="" style="width: 12rem;height:12rem">
+                <div class="card-body text-center">
+                        <span class="fa text-info  fa-building fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">الادارة</h6>
+                    @*<p class="card-text">يمكنك البحث و التعديل على جميف المستخدمين داخل التطبيق</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-action="Index" asp-controller="NavMenus">
+            <div class="" style="width: 12rem;height:12rem;">
+                <div class="card-body text-center">
+                        <span class="fa text-info fa-bars fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">القائمة</h6>
+                    @*<p class="card-text">تمكنك من إضافة و حذف العناصر في شريط التنقل</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    @*<div class="col-md-2 card my-1 me-1">
+    <a asp-action="Index" asp-controller="Blocks">
+    <div class="" style="width: 12rem;height:12rem;">
+    <div class="card-body text-center">
+    <span class="fa text-info fa-clone fa-5x"></span>
+    <h6 class="card-title text-dark">الاعلانات</h6>
+    </div>
+    </div>
+    </a>
+    </div>*@
+    @*<div class="col-md-2 card my-1 me-1">
+    <a asp-action="List" asp-controller="Tickets">
+    <div class="" style="width: 12rem;height:12rem;">
+    <div class="card-body text-center">
+    <span class="fa text-info fa-question fa-5x"></span>
+    <h6 class="card-title text-dark">الدعم الفني</h6>
+    </div>
+    </div>
+    </a>
+    </div>*@
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-action="Index" asp-controller="BlogPosts">
+            <div class="" style="width: 12rem;height:12rem;">
+                <div class="card-body text-center">
+                    <span class="fa text-info fa-edit fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">المواضيع</h6>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-action="Index" asp-controller="Pages">
+            <div class="" style="width: 12rem;height:12rem;">
+                <div class="card-body text-center">
+                    <span class="fa text-info fa-clipboard fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">الصفحات</h6>
+                    @*<p class="card-text">تمكنك من إضافة صفحات ثابتة للموقع</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-2 card my-1 me-1">
+        <a asp-action="UploadedFiles" asp-controller="Home">
+            <div class="" style="width: 12rem;height:12rem;">
+                <div class="card-body text-center">
+                    <span class="fa text-info fa-clipboard fa-5x"></span>
+                        <h6 style="padding:20px" class="card-title text-dark">رفع الملفات و الصور</h6>
+                    @*<p class="card-text">تمكنك من إضافة صفحات ثابتة للموقع</p>*@
+                </div>
+            </div>
+        </a>
+    </div>
+   @* <div class="col-md-2 card my-1 me-1">
+        <a asp-action="Index" asp-controller="Countries">
+            <div class="" style="width: 12rem;height:12rem;">
+                <div class="card-body text-center">
+                    <span class=" text-info fa fa-building fa-5x"></span>
+                    <h6 class="card-title text-dark">الدول</h6>
+                
+                </div>
+            </div>
+        </a>
+    </div>*@
+
+ @*   <div class="col-md-2 card my-1 me-1">
+        <a asp-action="Index" asp-controller="RoleAdmin">
+            <div class="" style="width: 12rem;height:12rem;">
+                <div class="card-body text-center">
+                    <span class="fa text-info fa-lock fa-5x"></span>
+                    <h6 class="card-title text-dark">الصلاحيات</h6>
+
+                </div>
+            </div>
+        </a>
+    </div>*@
+</div>
+</div>
+
+

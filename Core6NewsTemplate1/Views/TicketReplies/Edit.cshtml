@@ -1,0 +1,45 @@
+﻿@model WebOS.Models.TicketReply
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>التعديل على الرد"@Model.Body"</h4>
+<hr />
+<div class="row">
+    <div class="col-sm-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="Body" class="control-label"></label>
+                <textarea rows="10" asp-for="Body" class="form-control" ></textarea>
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SupportUserId" class="control-label"></label>
+                <input asp-for="SupportUserId" class="form-control" asp-items="ViewBag.SupportUserId" />
+                <span asp-validation-for="SupportUserId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TicketId" class="control-label"></label>
+                <input asp-for="TicketId" class="form-control" />
+                <span asp-validation-for="TicketId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ReplyDate" class="control-label"></label>
+                <input asp-for="ReplyDate" class="form-control" />
+                <span asp-validation-for="ReplyDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="حفظ" class="btn-sm btn-success rounded-0" />
+                <a class="btn-sm btn-primary rounded-0 pull-left" asp-controller="Tickets" asp-action="Details" asp-route-id="@Model.TicketId">رجوع</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+

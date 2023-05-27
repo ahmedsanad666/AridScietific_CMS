@@ -1,0 +1,56 @@
+﻿@model WebOS.Models.Statement
+
+@{
+    ViewData["Title"] = "التعديل على ال statements";
+}
+
+<h4>التعديل على ال "statements"</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="RecordDate" class="control-label"></label>
+                <input asp-for="RecordDate" class="form-control" />
+                <span asp-validation-for="RecordDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Details" class="control-label"></label>
+                <textarea rows="6" asp-for="Details" class="form-control" ></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Destination" /> @Html.DisplayNameFor(model => model.Destination)
+                </label>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <input asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></input>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BalanceType" class="control-label"></label>
+                <select asp-for="BalanceType" asp-items="@Html.GetEnumSelectList<BalanceType>()" class="form-control"></select>
+                <span asp-validation-for="BalanceType" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="حفظ" class="rounded-0 btn btn-success" />
+                <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

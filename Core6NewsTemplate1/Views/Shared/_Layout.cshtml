@@ -1,0 +1,205 @@
+﻿@*testing from saif*@
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    List<SelectListItem> cultureItems = new List<SelectListItem>();
+    cultureItems.Add(new SelectListItem { Text = "عر", Value = "ar-LY" });
+    cultureItems.Add(new SelectListItem { Text = "En", Value = "en" });
+}
+<!DOCTYPE html>
+<html  lang="ar">
+<head id="head">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+        @*@await Component.InvokeAsync("Head")*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Icon Font Stylesheet -->
+    <link asp-append-version="true" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link asp-append-version="true" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link asp-append-version="true" href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link asp-append-version="true" href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    @*arStyle*@
+    <link id="arBootstrap" asp-append-version="true" href="/css/bootstrap.min.css" rel="stylesheet">
+    <link id="arStyle" asp-append-version="true" href="/css/style.css" rel="stylesheet">
+
+    @*enStyle*@
+    <link id="enBootstrap" asp-append-version="true" href="/css/Enbootstrap.min.css" rel="stylesheet">
+    <link id="enStyle" asp-append-version="true" href="/css/Enstyle.css" rel="stylesheet">
+
+    @*slick*@
+    <link asp-append-version="true" rel="stylesheet" href="/css/slicknav.css">
+    <link asp-append-version="true" rel="stylesheet" href="/css/slick.css">
+    <script src="https://cdn.tiny.cloud/1/o74121qe2vgwn9rjx841hktrbt307eji8apqa3vaqtlkjcz4/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    @*global*@
+    <link rel="stylesheet" href="~/css/global.css" />
+</head>
+<body>
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- Navbar Start -->
+    <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+        @await Component.InvokeAsync("Header")
+        @await Component.InvokeAsync("NavbarTop")
+
+
+    </div>
+    <!-- Navbar End -->
+
+    <div class="">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await Component.InvokeAsync("Footer")
+    <!-- Footer Start -->
+    <!-- JavaScript Libraries -->
+    @*    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    *@
+
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/parallax/parallax.min.js"></script>
+    <script src="/js/jquery.slicknav.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+    @if (culture.Name == "en")
+    {
+        <script>
+            $('html').attr('dir', 'ltr')
+            $('html').attr('lang', 'en')
+            $('#arBootstrap').remove()
+            $('#arStyle').remove()
+        </script>
+        <script>
+            $('.weekly2-news-active').slick({
+                dots: true,
+                infinite: true,
+                speed: 600,
+                arrows: false,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                initialSlide: 3,
+                loop: true,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: false,
+                        }
+                    },
+                    {
+                        breakpoint: 991,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            dots: false
+                        }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            $('html').attr('dir', 'rtl')
+            $('html').attr('lang', 'ar')
+            $('#enBootstrap').remove()
+            $('#enStyle').remove()
+
+        </script>
+        <script>
+            $('.weekly2-news-active').slick({
+                dots: true,
+                infinite: true,
+                speed: 600,
+                arrows: false,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                initialSlide: 3,
+                loop: true,
+                rtl: true,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: false,
+                        }
+                    },
+                    {
+                        breakpoint: 991,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            dots: false
+                        }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+            });
+        </script>
+    }
+
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>*@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

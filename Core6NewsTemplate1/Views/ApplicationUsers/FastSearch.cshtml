@@ -1,0 +1,112 @@
+﻿@model IEnumerable<WebOS.Models.ApplicationUser>
+@*@using Microsoft.AspNetCore.Mvc.Localization
+    @inject IViewLocalizer Localizer*@
+@using System.Globalization
+@{
+    //ViewData["Title"] = Localizer["FastSearch"];
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+    <br>
+    <h4>بحث سريع</h4>
+
+    <form>
+        <div class="input-group mb-3">
+            <input value="@ViewData["keyword"]" type="text" name="keyword" class="form-control rounded-0" placeholder="أدخل الإسم او البريد الإلكتروني أو رقم الهاتف" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            @if (ViewData["keyword"] == null)
+            {
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text btn btn-success rounded-0" id="searching"><span class="fa fa-search"></span></button>
+                </div>
+            }
+            else
+            {
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text btn btn-danger rounded-0" id="cancelsearch"><span class="fa fa-times"></span></button>
+                </div>
+            }
+        </div>
+    </form>
+    @if (Model.Any())
+    {
+        <table class="table bg-white table-responsive">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Account)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CountryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CityId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Balance)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a target="_blank" asp-action="Details" asp-route-id="@item.Id">
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.City.ArCityName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Balance)
+                        </td>
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |*@
+                            <a asp-action="ControlPanel" asp-route-id="@item.Id">دخول</a> |
+                            @*<a href="https://portal.WebOS.my/ar-LY/Account/DAL/@item.DAL">رابط الدخول</a> |*@
+                            <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else if (ViewData["keyword"] != null)
+    {
+        <p>لا يوجد</p>
+    }
+</div>
+@section scripts{
+    <script>
+        $('#cancelsearch').click(function() {
+            $('[name="keyword"]').val('');
+            //$('#searching').trigger("click");
+
+        });
+                                    //$('#searching').click(function () {
+                                    //    $('#cancelsearch').prop("hidden", false);
+                                    //    $('#searching').hide;
+                                    //});
+
+    </script>
+    }

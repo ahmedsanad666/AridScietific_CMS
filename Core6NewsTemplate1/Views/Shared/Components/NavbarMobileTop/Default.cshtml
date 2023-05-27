@@ -1,0 +1,12 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ApplicationUser currentuser = await UserManager.GetUserAsync(User);
+}
+@foreach (var item in Model.NavMenus.OrderBy(n => n.indx))
+{
+          <a class="p-2 link-secondary" href="#">@item.Name</a>
+
+@*    <li class="nav-item"><a class="nav-link" href="@item.Url">@item.Name</a></li>
+*@}   

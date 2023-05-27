@@ -1,0 +1,82 @@
+﻿@model WebOS.Models.SystemSettings
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+    <h1>Details</h1>
+
+    <div>
+        <h4>SystemSettings</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AraName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AraName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EngName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EngName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AdminEmail)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AdminEmail)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LaunchDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LaunchDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FB)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FB)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Twitter)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Twitter)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Linkedin)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Linkedin)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Youtube)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Youtube)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Instagram)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Instagram)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LastUpate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastUpate)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+    </div>

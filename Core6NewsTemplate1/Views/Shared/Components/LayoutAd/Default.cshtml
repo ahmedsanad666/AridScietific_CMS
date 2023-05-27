@@ -1,0 +1,7 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ApplicationUser currentuser = await UserManager.GetUserAsync(User);
+}
+<a href="@Model.BlockItem.link"><img class="img-fluid" style="width:100%;height:100px" src="/Pictures/@Model.BlockItem.Image" /> </a>

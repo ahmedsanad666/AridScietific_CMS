@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WebOS.Models.Page>
+
+@{
+    ViewData["Title"] = "إدارة الصفحات";
+}
+<partial name="_ViewHeader" />
+
+<div class="px-5">
+
+
+<h4>إدارة الصفحات</h4>
+
+<p>
+    <a class="btn btn-success rounded-0" asp-action="Create">إضافة صفحة</a>
+</p>
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+
+                <td>
+                    <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id"><span class="text-primary fa fa-edit"></span></a> |
+                    <a title="حذف" asp-action="Delete" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+                    <a title="مشاهدة" asp-action="Details" asp-route-id="@item.Id"><span class="text-danger fa fa-eye"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

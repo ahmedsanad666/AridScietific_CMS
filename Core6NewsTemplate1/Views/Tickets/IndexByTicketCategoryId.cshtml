@@ -1,0 +1,89 @@
+﻿@model WebOS.Models.TicketViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>تذاكر الدعم الفني</h2>
+@*<div class="col-12">
+
+    <form asp-action="List"><input hidden value="open" name="ss" /><input type="submit" class="btn btn-success" value="المفتوحة" /></form>
+
+    <form asp-action="List" class="mr-1 ml-1"><input hidden value="closed" name="ss" /><input type="submit" class="btn btn-danger" value="المغلقة" /></form>
+    <form asp-action="List"><input hidden value="all" name="ss" /><input type="submit" class="btn btn-primary" value="الكل" /></form>
+    </div>*@
+
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Subject)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.TicketOpenDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Status)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.ApplicationUser)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.TicketCategory)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tickets)
+            {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Subject)
+                </a>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketOpenDate)
+            </td>
+
+            <td>
+                @if (item.Status == true)
+                        {
+                <p style="color:green">مفتوحة</p>
+                        }
+
+                        else
+                        {
+                <p style="color:red">مغلقة</p>
+                        }
+                @*@Html.DisplayFor(modelItem => item.Status)*@
+            </td>
+
+            <td>
+                <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketCategory.Name)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">تفاصيل</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">حذف</a> |*@
+                @*<a asp-controller="TicketReplies" asp-action="Create" asp-route-tid="@item.Id">اضف رد</a> |*@
+                @*<a asp-controller="TicketReplies" asp-action="Index" asp-route-tid="@item.Id">تفاصيل</a>*@
+            </td>
+        </tr>
+            }
+    </tbody>
+</table>
+

@@ -1,0 +1,487 @@
+﻿@model WebOS.Models.MessageViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "رسائل " + Model.Message.FromApplicationUser.ArName;
+}
+
+<h2>&nbsp;</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-12 p-1 border border-dark" style="background-color:ghostwhite">
+            <div class="col-lg-12">
+                المرسل :   <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Message.FromApplicationUserId" class="text-primary">
+                    <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + Model.Message.FromApplicationUser.ImageProfile)"
+                         height="40" width="40" class="rounded-circle" />
+                    @Model.Message.FromApplicationUser.ArName
+                    <span class="pull-left h6">@Html.DisplayFor(model => model.Message.DateOfRecord)</span>
+                </a>
+                <hr />
+                الى :    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Message.ToApplicationUserId" class="text-primary">
+                    <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + Model.Message.ToApplicationUser.ImageProfile)"
+                         height="40" width="40" class="rounded-circle" />
+                    @Model.Message.ToApplicationUser.ArName
+                </a>
+                <h5 class="text-center">@Model.Message.Content</h5>
+                @if (currentUser.Id == Model.Message.FromApplicationUserId && Model.Message.IsRead == true)
+                {
+                    <h6 class="pull-left"><span title="@Model.Message.DateOfRead" class="text-success fa fa-check"></span>تأريخ القراءة: @Model.Message.DateOfRead </h6>
+                }
+                @if (Model.Message.Attachment != null)
+                {
+                    <a class="pull-left h5 text-success btn btn-primary" target="_blank" href="@Url.Content("~/" + @WebOS.Properties.Resources.Secured + "/" + Model.Message.Attachment)">
+                        تحميل الملف المرفق
+                    </a>
+                }
+            </div>
+        </div><br /><br /><br /><br /><br /><br /><br />
+        <hr />
+        @*<hr style="border:2px solid Activecaption" />*@
+        <div class="mt-5" id="ssss">
+            @foreach (var item in Model.messageReplies)
+            {
+                @if (currentUser.Id == item.ApplicationUserId)
+                {
+                    <div class="col-lg-12 rm mt-1 border border-dark rm bg-white p-1 pb-4">
+                        <div class="col-lg-12">
+                            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" class="h5">
+                                <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.ApplicationUser.ImageProfile)"
+                                     height="40" width="40" class="rounded-circle" />
+                                <small>@item.ApplicationUser.ArName</small>
+                            </a>
+                            <span class="pull-left h6">@Html.DisplayFor(modelitem => item.DateOfRecord)</span>
+
+                            <p>@Html.Raw(item.Content)</p>
+                            @if (currentUser.Id == item.ApplicationUserId && item.IsRead == true)
+                            {
+                                <p class="text-muted pull-left"><span title="@item.DateOfRead" class=" text-success fa fa-check"></span>تأريخ القراءة: @item.DateOfRead </p>
+                            }
+                            @if (item.Attachment != null && item.Attachment != "")
+                            {<a class="pull-left btn-sm btn-primary" href="@Url.Content("~/" + @WebOS.Properties.Resources.Secured + "/" + item.Attachment)">
+                                    تحميل الملف
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="col-lg-12 border border-dark rm bg-light p-1 mt-1">
+                        <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" class="pull-left">
+                            <small>@item.ApplicationUser.ArName</small>
+                            <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.ApplicationUser.ImageProfile)"
+                                 height="40" width="40" class="rounded-circle" />
+                        </a>
+                        <span class="pull-right h6">@Html.DisplayFor(modelitem => item.DateOfRecord)</span><br />
+                        <p>@Html.Raw(item.Content)</p>
+
+                        @if (item.Attachment != null && item.Attachment != "")
+                        {<a class="pull-left pull-left btn-sm btn-primary" href="@Url.Content("~/" + @WebOS.Properties.Resources.Secured + "/" + item.Attachment)">
+                                تحميل الملف
+                            </a>
+                        }
+                        @*<span class="">11:00</span>*@
+                    </div>
+
+                }
+
+            }
+        </div>
+
+    </div>
+    <div class="col-lg-12 mt-2">
+        <div class="p-2 col-lg-12 border border-dark bg-white">
+            <form asp-action="CreateComment" enctype="multipart/form-data">
+                <input hidden value="" />
+                <div class="mb-3 addedfiles">
+                    <div class="col-md-12 mb-n3">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-1">
+                            <label asp-for="Message.Attachment" class="control-label"></label>
+                        </div>
+                        <div class="mb-3 border border-dark drop-zone col-lg-8">
+                            <span class="fa fa-download fa-2x pull-right"></span>
+                            <span class="drop-zone__prompt font-weight-bold">إسحب الملف إلى هنا أو أُنقر للإختيار يدوياً</span>
+                            <input type="file" name="file" accept=".pdf,.docx,.doc" class="drop-zone__input">
+                            @*<div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="رفع الملف" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">رفع الملف</span>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="Message.Attachment" class="text-danger"></span>*@
+                        </div>
+
+                        <div class="col-md-2"></div>
+                    </div>
+                    @*<div class="col-lg-12 mt-n3">
+                            <div class="col-lg-2"></div>
+                            <div class="border border-dark addeddiv col-lg-8 bg-white p-2">
+                                <span class="col-lg-10 addedfile"></span><a class="mb-2 btn-sm btn-danger text-white rounded-0"><span class="fa fa-times"></span>حذف</a>
+                                <div class="col-lg-12">
+                                </div>
+                            </div>
+                            <div class="col-lg-2"></div>
+                        </div>*@
+                    <div class="col-lg-1"></div>
+
+                    <div class="col-lg-1" hidden>
+                        <label>ملف</label>
+                    </div>
+                    <div class="col-lg-8" hidden>
+                        <input />
+                        <input type="hidden" id="fileinput" class="form-control" />
+                    </div>
+                    <div class="col-lg-2"></div>
+
+                </div>
+                <div class="mb-3 col-lg-12 mt-3">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-1">
+                        <label>الرد</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <textarea class="form-control" id="reply" name="reply"></textarea>
+                    </div>
+                    <div class="col-lg-2"></div>
+
+                </div>
+                <div class="mb-3 col-lg-12">
+                    <h4 class="text-center"><a id="addreply" value="إرسال" class=" text-white btn-sm btn-info">إرسال</a></h4>
+                </div>
+            </form>
+        </div>
+    </div>
+    @*<h4>Message</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Subject)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Subject)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfRecord)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateOfRecord)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfRead)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateOfRead)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsRead)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsRead)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsDeleted)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsReported)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsReported)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Attachment)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Attachment)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FromApplicationUser)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FromApplicationUser.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ToApplicationUser)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ToApplicationUser.Id)
+            </dd>
+        </dl>*@
+</div>
+<style type="text/css">
+    textarea {
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+    }
+
+    .addedfiles {
+        margin-top: -16px;
+        margin-bottom: 20px;
+    }
+
+    .drop-zone {
+        padding: 25px;
+        width: 100%;
+        margin-right: 15px;
+        cursor: pointer;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .drop-zone--over {
+        border-style: solid;
+    }
+
+    .drop-zone__input {
+        display: none;
+    }
+
+    .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+    }
+
+        .drop-zone__thumb::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 0;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.75);
+            font-size: 14px;
+            text-align: center;
+        }
+</style>
+@section Scripts{
+    <script>
+        function bytesToSize(bytes) {
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            if (bytes == 0) return '0 Byte';
+            var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+        }
+    </script>
+    @*//filedelete*@
+    <script>
+        $(document).on("click", ".deletefile", function () {
+            var filename = $('.addedfile').text();
+            $(this).parent().remove()
+            $($('[name="file"]')).val('');
+        //alert($('.addedfile').text())
+
+    })
+    </script>
+
+    <script>
+        function Live() {
+            setTimeout(function () {
+                $('.div1').removeClass("fas");
+                $('.div1').addClass("far");
+            }, 500);
+            setTimeout(function () {
+                $('.div1').removeClass("far");
+                $('.div1').addClass("fas");
+            }, 1000);
+        }
+        Live();
+        setInterval(Live, 1000);
+    </script>
+    
+<script>
+    $('.addeddiv').hide()
+    document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+        const dropZoneElement = inputElement.closest(".drop-zone");
+
+        dropZoneElement.addEventListener("click", (e) => {
+            inputElement.click();
+        });
+
+        inputElement.addEventListener("change", (e) => {
+            //alert('ss')
+            if (inputElement.files.length) {
+                updateThumbnail(dropZoneElement, inputElement.files[0]);
+                @*var formData = new FormData();
+                formData.append('file', inputElement.files[0]); // myFile is the input type="file" control
+                var _url = '@Url.Action("AddFile", "Messages")';
+                        $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,  // tell jQuery not to process the data
+                            contentType: false,  // tell jQuery not to set contentType
+                            success: function (result) {
+                                //alert('sucess')
+                                //$("body").html(result).find('.div').last().hide().fadeIn();
+                                //$('html, body').animate({
+                                //    scrollTop: $('.div').last().prev().offset().top
+                                //}, 2500);
+
+                            },
+                            error: function (jqXHR) {
+                            },
+                            complete: function (jqXHR, status) {
+                                //location.reload(true);
+                                $('.addeddiv').show()
+                            }
+
+                        });*@
+            }
+        });
+        dropZoneElement.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZoneElement.classList.add("drop-zone--over");
+        });
+
+        ["dragleave", "dragend"].forEach((type) => {
+            dropZoneElement.addEventListener(type, (e) => {
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
+        });
+        dropZoneElement.addEventListener("drop", (e) => {
+            //alert('ss')
+            e.preventDefault();
+            if (e.dataTransfer.files.length) {
+                inputElement.files = e.dataTransfer.files;
+                updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+
+                                    @*var formData = new FormData();
+                formData.append('file', inputElement.files[0]); // myFile is the input type="file" control
+                var _url = '@Url.Action("AddFile", "Messages")';
+                        $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,  // tell jQuery not to process the data
+                            contentType: false,  // tell jQuery not to set contentType
+                            success: function (result) {
+                                //alert('sucess')
+                                //$("body").html(result).find('.div').last().hide().fadeIn();
+                                //$('html, body').animate({
+                                //    scrollTop: $('.div').last().prev().offset().top
+                                //}, 2500);
+
+                            },
+                            error: function (jqXHR) {
+                            },
+                            complete: function (jqXHR, status) {
+                                $('.addeddiv').show()
+                            }
+
+                        });*@
+            }
+            //alert('ss')
+            dropZoneElement.classList.remove("drop-zone--over");
+        });
+    });
+
+    /**
+        * Updates the thumbnail on a drop zone element.
+        *
+        * @@param {HTMLElement} dropZoneElement
+        * @@param {File} file
+        */
+    function updateThumbnail(dropZoneElement, file) {
+        let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+        //alert('s')
+        $('.addedfile').parent().remove();
+        $(".addedfiles").append('<div class="col-lg-12"><div class="col-lg-2"></div><div class="border border-dark addeddiv col-lg-8 bg-white drop-zone p-2"><span class="col-lg-8 addedfile">' + file.name + '</span><span> (حجم الملف:"' + bytesToSize(file.size) + ')</span><span class="fileeditedname" id="' +file.type+ '"></span><a class="btn-sm btn-danger text-white deletefile rounded-0"><span class="fa fa-times"></span> حذف</a></div><div class="col-lg-2"></div></div>')
+
+        // First time - remove the prompt
+        //if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+        //    dropZoneElement.querySelector(".drop-zone__prompt").remove();
+        //}
+
+        // First time - there is no thumbnail element, so lets create it
+        if (!thumbnailElement) {
+            thumbnailElement = document.createElement("div");
+            thumbnailElement.classList.add("drop-zone__thumb");
+            dropZoneElement.appendChild(thumbnailElement);
+            $('.addedfile').append(thumbnailElement)
+        }
+
+        thumbnailElement.dataset.label = file.name;
+
+        // Show thumbnail for image files
+        if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+            };
+        } else {
+            thumbnailElement.style.backgroundImage = null;
+        }
+    }
+</script>
+    <script>
+        $('.custom-file').click(function () {
+            $('#file').click()
+        })
+    </script>
+    <script>
+    $(document).ready(function () {
+        $('#addreply').click(
+
+            function () {
+
+                {
+                    var files = new FormData();
+
+                            var formData = new FormData();
+                    formData.append('file', $("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                    formData.append('reply', $("[name='reply']").val()); // myFile is the input type="file" control
+                    formData.append('mid', @Model.Message.Id); // myFile is the input type="file" control
+
+                    var _url = '@Url.Action("AddReplyDetails", "Messages")';
+                        $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,  // tell jQuery not to process the data
+                            contentType: false,  // tell jQuery not to set contentType
+                            success: function (result) {
+                                $('.addedfile').parent().remove()
+                                //$('#file').val("")
+                                $("#ssss").load(window.location + " #ssss").find('.rm').last().hide().fadeIn();
+                                $('html, body').animate({
+                                    scrollTop: $('.rm').last().offset().top
+                                }, 2500);
+                            },
+                            error: function (jqXHR) {
+                            },
+                            complete: function (jqXHR, status) {
+                            }
+
+                        });
+
+                }
+                $("#reply").val('')
+
+                });
+    });
+    </script>
+
+}

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebOS.Models.BlogTaxonomy>
+
+@{
+    ViewData["Title"] = "الأقسام الفرعية لقسم " + ViewBag.taxonomy.Name;
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<h4>الأقسام الفرعية لقسم "@ViewBag.taxonomy.Name"</h4>
+
+<p>
+    <a class="btn btn-primary rounded-0" asp-controller="BlogTaxonomies" asp-action="CreateSub" asp-route-tid="@ViewBag.taxonomy.Id">إضافة قسم فرعي</a>
+</p>
+@if (Model.Any())
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnName)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Sub)
+                    </th>*@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Name)*@
+                         <a asp-controller="BlogPosts" asp-action="TaxonomyIndex" asp-route-taxonomyid="@item.Id">@item.Name</a>
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Name)*@
+                         <a asp-controller="BlogPosts" asp-action="TaxonomyIndex" asp-route-taxonomyid="@item.Id">@item.EnName</a>
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Sub)
+                        </td>*@
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-pen"></span></a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id"><span class="fa fa-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>لا توجد أقسام فرعية للقسم "@ViewBag.taxonomy.Name"</p>
+}
+<a class="btn btn-primary rounded-0" asp-controller="BlogPosts" asp-action="Index">رجوع</a>
+</div>

@@ -1,0 +1,43 @@
+﻿@model WebOS.Models.TicketCategory
+
+@{
+    ViewData["Title"] = "إضافة قسم";
+}
+
+
+<h4>إضافة قسم</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="NotifyEmail" class="control-label"></label>
+                <input type="email" asp-for="NotifyEmail" class="form-control" />
+                <span asp-validation-for="NotifyEmail" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="إضافة" class="btn btn-success rounded-0" />
+                <a class="btn btn-primary rounded-0" asp-controller="Tickets" asp-action="List">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+

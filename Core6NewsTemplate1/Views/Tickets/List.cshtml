@@ -1,0 +1,219 @@
+﻿@model IEnumerable<Ticket>
+
+@{
+    ViewData["Title"] = "إدارة تذاكر الدعم الفني";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+<h4> إدارة تذاكر الدعم الفني</h4>
+@*<div class="col-12">
+
+    <form asp-action="List"><input hidden value="open" name="ss" /><input type="submit" class="btn btn-success" value="المفتوحة" /></form>
+
+    <form asp-action="List" class="mr-1 ml-1"><input hidden value="closed" name="ss" /><input type="submit" class="btn btn-danger" value="المغلقة" /></form>
+    <form asp-action="List"><input hidden value="all" name="ss" /><input type="submit" class="btn btn-primary" value="الكل" /></form>
+    </div>*@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-12 border border-dark p-2 bg-white">
+            <form asp-action="List">
+                <div class="mb-3 col-lg-2">
+                    <input type="hidden" value="@ViewData["open"]" class="check big-checkbox" name="open" />مفتوحة
+                    <input class="checkopen" type="checkbox" />
+
+                </div>
+                <div class="mb-3 col-lg-2">
+                    <input type="hidden" value="@ViewData["closed"]" class="check big-checkbox" name="closed" /> مغلقة
+                    <input class="checkclose" type="checkbox" />
+                </div>
+                <div class="mb-3 col-lg-8">
+                    <div class="col-lg-10">
+                        <input type="search" value="@ViewData["ss"]" name="ss" class="form-control" placeholder="ابحث" />
+                    </div>
+                    @if (ViewData["ss"] == null)
+                    {
+                        <div class="col-lg-2">
+                            <input type="submit" class="form-control btn btn-info rounded-0" value="إبحث" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2">
+                            <input id="cancelsearch" type="submit" class="form-control btn btn-danger rounded-0" value="إلغاء" />
+                        </div>
+                    }
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-12 mt-2">
+
+            <div class="col-lg-4 bg-white">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TicketCategory.Name)
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.ticketcategories)
+                        {
+
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="TicketCategories" asp-route-id="@item.Id" class="text-primary"><span class="fa fa-edit"></span></a> <span>&nbsp;</span><a asp-action="Delete" asp-controller="TicketCategories" asp-route-id="@item.Id"  class="text-danger"><span class="fa fa-trash"></span></a>
+                            </td>
+
+                        </tr>
+                        }
+                        <tr>
+                            <td>
+                                <a asp-action="Create" asp-controller="TicketCategories" class="btn btn-success rounded-0"><span class="fa fa-plus"></span>  إضافة قسم</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-7">
+                <table class="table table-responsive bg-white">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Subject)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.TicketOpenDate)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.ApplicationUser)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.TicketCategoryId)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.onepageoftickets)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                        @item.Subject
+                                    </a>
+                                </td>
+
+                                <td>
+                                    @item.TicketOpenDate
+                                </td>
+
+                                <td>
+                                    @if (item.Status == true)
+                                    {
+                                        <p style="color:green">مفتوحة</p>
+                                    }
+
+                                    else
+                                    {
+                                        <p style="color:red">مغلقة</p>
+                                    }
+                                    @*@Html.DisplayFor(modelItem => item.Status)*@
+                                </td>
+
+                                <td>
+                                    <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.ApplicationUserId">@item.ApplicationUser.ArName</a>
+                                </td>
+                                <td>
+                                    @item.TicketCategory.Name
+                                </td>
+                                <td>
+                                    <a asp-action="Delete" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-edit"></span></a>
+                                    @*<a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">تفاصيل</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">حذف</a> |*@
+                                    @*<a asp-controller="TicketReplies" asp-action="Create" asp-route-tid="@item.Id">اضف رد</a> |*@
+                                    @*<a asp-controller="TicketReplies" asp-action="Index" asp-route-tid="@item.Id">تفاصيل</a>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <span class="pager">
+                    @Html.PagedListPager((IPagedList)ViewBag.onepageoftickets, page => Url.Action("List", new { page, ss=ViewData["ss"],closed=ViewData["closed"],open=ViewData["open"] }),
+                       new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+                       {
+                           //DisplayItemSliceAndTotal=true,
+                           ContainerDivClasses = new[] { "navigation" },
+                           LiElementClasses = new[] { "page-item rounded-0" },
+                           PageClasses = new[] { "page-link rounded-0" }
+                       }
+                         )
+                </span>
+            </div>
+        </div>
+    </div>
+    @*<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+        page-class="btn border" page-class-normal="btn btn-primary active"
+        page-class-selected="btn btn-success active" class="btn-group m-1"></div>*@
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+                $('#cancelsearch').click(function () {
+                    $("[name='ss']").val("")
+                    $('input[type=submit]').click();
+                });
+                if ($("[name='closed']").val() == "true") {
+                    $('.checkclose').prop("checked", true)
+                }
+                if ($("[name='open']").val() == "true") {
+                    $('.checkopen').prop("checked", true)
+
+                }
+
+                $('.checkclose').click(function () {
+                    if ($(this).is(':checked')) {
+                        $('.checkopen').prop("checked", false)
+                        $("[name='closed']").val("true")
+                        $("[name='open']").val("false")
+                    }
+                    else {
+                        $("[name='closed']").val("false")
+                    }
+                    $('input[type=submit]').click();
+                });
+
+                $('.checkopen').click(function () {
+                    if ($(this).is(':checked')) {
+                        $('.checkclose').prop("checked", false)
+                        $("[name='closed']").val("false")
+                        $("[name='open']").val("true")
+                    }
+                    else {
+                        $("[name='open']").val("false")
+                    }
+                    $('input[type=submit]').click();
+
+                });
+            });
+        </script>
+    }

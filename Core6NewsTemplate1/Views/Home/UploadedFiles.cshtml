@@ -1,0 +1,90 @@
+﻿@model SystemSettings
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+
+
+
+<!-- Page Header Start -->
+<partial name="_ViewHeader" />
+
+<p>اضف صورة</p>
+<form asp-action="UploadFile" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3" id="img">
+        <img width="400" height="300" id="img1" class="img-rounded center-block" src="" />
+        <input required type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.pdf,.docx,.ppt" class="btn btn-info col-lg-12 input-sm" />
+        <input placeholder="هذا الحقل ضروري" readonly name="Image" id="fileinput" class="form-control input-sm" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="اضافة الملف" class="btn btn-primary" />
+    </div>
+</form>
+<!-- Page Header End -->
+<!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        الاسم
+                    </th>
+                    <th>
+                        الرابط
+                    </th>
+                    <th>
+                        الصورة
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Directory.GetFiles("./Files"))
+                {
+                    <tr>
+                        <td>
+                            @item
+                        </td>
+                        <td>
+                            @Url.Content("~/" + @WebOS.Properties.Resources.UploadedFile + "/" + item)
+                        </td>
+                        <td>
+                            <img class="img-rounded" src="@Url.Content("~/" + @WebOS.Properties.Resources.UploadedFile + "/" + item)" width="50" height="50" />
+                        </td>
+                        <td>
+                            <a>حذف</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+@section scripts{
+    <script>
+        $(document).ready(function() {
+            $('#img1').hide();
+            $("#file").change(function() {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    $('#img1').fadeIn();
+                    var reader = new FileReader();
+                    reader.onload = function(e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,314 @@
+﻿@model WebOS.Models.ApplicationUserViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> signinmanager
+@{
+    ViewData["Title"] = "الصفحة الشخصية";
+    var currentuser = await UserManager.GetUserAsync(User);
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+
+<div class="row">
+    <div style="width:100%; height:300px;z-index:-1" class="col-lg-12 mt-n4 bg-white text-center">
+        <div style="margin: 0;position: absolute;top: 50%;left: 50%;-ms-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+            <img class="rounded-circle border border-info p-1" style="width:150px;height:150px;" src="~/ProfileImages/@currentuser.ImageProfile">
+            <h4 class="text-center font-weight-bold text-info">@Model.ApplicationUser.ArName</h4>
+        </div>
+    </div>
+    <div class="" style="width:100%;background-color:ghostwhite;border-color:black;border-bottom:2px;border-top:2px">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link rounded-0 active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">الملف الشخصي</a>
+            </li>
+            <li>&nbsp;</li>
+            <li class="nav-item">
+                <a class="nav-link rounded-0" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link rounded-0" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+            </li>
+            <li>
+                @{
+                    if (signinmanager.IsSignedIn(User))
+                    {
+                        if (currentuser.Id != Model.ApplicationUser.Id)
+                        {
+                            <button title="الرسائل" data-toggle="modal" data-target="#messagemodel" class="btn-sm btn-info">رسالة</button>}
+                    } }
+                <!-- Modal -->
+                <div id="succesmessage" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
+                            <h4><strong></strong> تم إرسال الرسالة بنجاح.</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="messagemodel" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title text-center">إرسال رسالة</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3" id="app" hidden>
+                                    <label class="control-label h4">المستخدم</label>
+                                    <input readonly value="@Model.ApplicationUser.ArName" class="form-control" />
+                                    <input readonly value="@Model.ApplicationUser.Id" name="appuser" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <input placeholder="العنوان - هذا الحقل ضروري" name="title" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <textarea placeholder="الرسالة - هذا الحقل ضروري" rows="5" name="message" class="form-control"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="control-label h4">ملف</label>
+                                    <input name="file" type="file" id="file" accept=".docx,.pdf" class="btn btn-info col-lg-12" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" id="addmessage" type="submit" class="btn-sm btn-secondary h5 pull-right">إرسال</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+
+            @*<li class="nav-item">
+                    <a class="nav-link rounded-0" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                </li>*@
+        </ul>
+    </div>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active bg-white col-lg-7 mt-2" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.ArName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.ArName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.EnName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.EnName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.DateofBirth)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.DateofBirth)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.Gender)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.Gender)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.SecondEmail)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.SecondEmail)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.Status)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.Status)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.UILanguage)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.UILanguage)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.CountryId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.CountryId)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.UserName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.UserName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.NormalizedUserName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.NormalizedUserName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.NormalizedEmail)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.NormalizedEmail)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.EmailConfirmed)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.EmailConfirmed)
+                </dd>
+                @*<dt>
+                        @Html.DisplayNameFor(model => model.ApplicationUser.PasswordHash)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ApplicationUser.PasswordHash)
+                    </dd>*@
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.SecurityStamp)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.SecurityStamp)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.ConcurrencyStamp)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.ConcurrencyStamp)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.PhoneNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.PhoneNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.PhoneNumberConfirmed)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.PhoneNumberConfirmed)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.TwoFactorEnabled)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.TwoFactorEnabled)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.LockoutEnd)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.LockoutEnd)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.LockoutEnabled)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.LockoutEnabled)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.AccessFailedCount)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.AccessFailedCount)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.City)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.City.ArCityName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.ReferredBy)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.ReferredBy.Id)
+                </dd>
+            </dl>
+        </div>
+        <div class="tab-pane fade col-lg-7" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade col-lg-7" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        <div class="col-lg-1"></div>
+        <div class="bg-white mt-2 col-lg-4 p-2">
+            <div class="">
+                <h4 class="mb-0">
+                    <button class="btn btn-link  pull-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <span style="float:left" class="fa fa-chevron-up"></span>
+                    </button>
+                    إحصائيات
+                </h4>
+                <hr />
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@section scripts{
+    <script>
+            $(document).ready(function () {
+            $('#addmessage').click(
+                function () {
+
+                    {
+                        $("#succesmessage").modal('show');
+                                var formData = new FormData();
+                        formData.append('file', $("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                        formData.append('message', $("[name='message']").val()); // myFile is the input type="file" control
+                        formData.append('title', $("[name='title']").val()); // myFile is the input type="file" control
+                        formData.append('appuser', $("[name='appuser']").val()); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("CreateMessage", "ApplicationUsers")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function () {
+                                },
+                                error: function (jqXHR) {
+                                },
+                                complete: function (jqXHR, status) {
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+    </script>
+
+    <script>
+        $('.fa').click(function () {
+            if ($(this).hasClass('fa-chevron-down')) {
+                $(this).removeClass('fa-chevron-down').addClass('fa-chevron-up')
+            }
+            else {
+                $(this).removeClass('fa-chevron-up').addClass('fa-chevron-down')
+            }
+        })
+    </script>
+}

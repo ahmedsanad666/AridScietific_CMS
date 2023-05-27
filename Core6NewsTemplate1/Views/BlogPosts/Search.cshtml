@@ -1,0 +1,73 @@
+﻿@model WebOS.Models.BlogViewModel
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "البحث";
+}
+<link rel="stylesheet" asp-append-version="true" href="/assets/css/style.css">
+<partial name="_ViewHeader" />
+<div class="px-5">
+<div class="col-md-12">
+    <div class="row">
+        <div id="divforadd" class="mt-2">
+            <div class="mb-3 mt-2">
+                <form asp-action="Search">
+                    <div style="position:relative">
+                        <input name="q" id="inputsearch" type="text" value="@ViewData["q"]" class="form-control input-sm rounded-0" placeholder="إبحث في المنشورات">
+                        <svg style="position:absolute;top:10px;left:10px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table id="poststable" class="table mt-2 mb-5 bg-white">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BlogPost.Title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BlogPost.BlogTaxonomy)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="realposts">
+                        @foreach (var item in ViewBag.onePageOfBlogPosts)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="text-dark"> @item.Title</a>
+                                </td>
+                                <td>
+                                    <a asp-action="TaxonomyIndex" class="text-dark" asp-route-taxonomyid="@item.BlogTaxonomyId">@item.BlogTaxonomy.Name</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+<span class="pager">
+    @Html.PagedListPager((IPagedList)ViewBag.onePageOfBlogPosts, page => Url.Action("Search", new { page ,q= ViewData["q"] }),
+    new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+    {
+    //DisplayItemSliceAndTotal=true,
+    ContainerDivClasses = new[] { "navigation" },
+    LiElementClasses = new[] { "page-item rounded-0" },
+    PageClasses = new[] { "page-link rounded-0" }
+    }
+    )
+</span>
+@section scripts{
+
+}

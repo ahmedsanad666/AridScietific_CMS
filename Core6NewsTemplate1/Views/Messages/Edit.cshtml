@@ -1,0 +1,82 @@
+﻿@model WebOS.Messages.Models.Message
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Message</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DateOfRecord" class="control-label"></label>
+                <input asp-for="DateOfRecord" class="form-control" />
+                <span asp-validation-for="DateOfRecord" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DateOfRead" class="control-label"></label>
+                <input asp-for="DateOfRead" class="form-control" />
+                <span asp-validation-for="DateOfRead" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="FromApplicationUserId" class="control-label"></label>
+                <select asp-for="FromApplicationUserId" class="form-control" asp-items="ViewBag.FromApplicationUserId"></select>
+                <span asp-validation-for="FromApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ToApplicationUserId" class="control-label"></label>
+                <select asp-for="ToApplicationUserId" class="form-control" asp-items="ViewBag.ToApplicationUserId"></select>
+                <span asp-validation-for="ToApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsRead" /> @Html.DisplayNameFor(model => model.IsRead)
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsReported" /> @Html.DisplayNameFor(model => model.IsReported)
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Attachment" class="control-label"></label>
+                <input asp-for="Attachment" class="form-control" />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

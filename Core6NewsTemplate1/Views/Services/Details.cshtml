@@ -1,0 +1,49 @@
+﻿@model WebOS.Models.Service
+
+@{
+    ViewData["Title"] = "ملومات عن خدمة";
+        var culture = System.Globalization.CultureInfo.CurrentCulture;
+
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<div>
+        @if (culture.Name == "en")
+        {
+            <h4>@Model.EnTitle</h4>
+            <hr />
+            <dl class="row">
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.EnBriefDescription)
+                </dd>
+                <dd class = "col-sm-10">
+                    @Html.Raw(Model.EnBody)
+                </dd>
+                <dd class = "col-sm-10">
+                    <img src="/Pictures/@Model.Image"/>
+                </dd>
+            </dl>
+        }
+        else
+        {
+            <h4>@Model.Title</h4>
+            <hr />
+            <dl class="row">
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.BriefDescription)
+                </dd>
+                <dd class = "col-sm-10">
+                    @Html.Raw(Model.Body)
+                </dd>
+                <dd class = "col-sm-10">
+                    <img src="/Pictures/@Model.Image"/>
+                </dd>
+            </dl>
+
+        }
+    </div>
+
+</div>
+

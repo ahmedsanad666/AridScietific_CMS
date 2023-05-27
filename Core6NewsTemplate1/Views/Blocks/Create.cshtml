@@ -1,0 +1,40 @@
+﻿@model WebOS.Models.Block
+
+@{
+    ViewData["Title"] = "إضافة block";
+}
+
+
+<h4>إضافة block</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BlockLocation" class="control-label"></label>
+                <select asp-items="@Html.GetEnumSelectList<BlockLocation>()" asp-for="BlockLocation" class="form-control"></select>
+                <span asp-validation-for="BlockLocation" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="status" /> @Html.DisplayNameFor(model => model.status)
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="إضافة" class="btn btn-success rounded-0" />
+                <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

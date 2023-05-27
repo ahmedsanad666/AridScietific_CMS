@@ -1,0 +1,321 @@
+﻿@model WebOS.Models.BlogViewModel
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "قائمة المدونات";
+}
+
+@*<h1>Index</h1>*@
+@*<a class="btn btn-primary rounded-0" asp-action="CreateSub" asp-controller="BlogTaxonomies">إضافة قسم فرعي</a>*@
+<partial name="_ViewHeader" />
+<div class="px-5">
+    <p>إدارة المدونات</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table bg-white table-responsive">
+                <caption style="display:inline">الأقسام الرئيسة</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BlogTaxonomy.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BlogTaxonomy.IsFeatured)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.BlogTaxonomies)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name) | @Html.DisplayFor(modelItem => item.EnName) <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id"><span class="badge badge-pill bg-primary">@Model.BlogPosts.Where(b => b.BlogTaxonomyId == item.Id || b.BlogTaxonomy.Sub == item.Id).Count()</span></a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsFeatured)
+                            </td>
+                            <td>
+                                <a title="التعديل" asp-action="Edit" asp-controller="BlogTaxonomies" asp-route-id="@item.Id"><span class="fa fa-pen"></span></a>
+                                <a title="الحذف" asp-action="Delete" asp-controller="BlogTaxonomies" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+                                @*<a title="إضافة قسم فرعي" asp-action="CreateSub" asp-controller="BlogTaxonomies" asp-route-tid="@item.Id"><span class="fa fa-plus"></span></a>*@
+                                <a title="الأقسام الفرعية" asp-action="Index" asp-controller="BlogTaxonomies" asp-route-id="@item.Id"><span class="text-warning fa fa-list"></span></a>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            <a class="btn-sm btn-primary rounded-0" asp-action="Create" asp-controller="BlogTaxonomies"><span class="text-success fa fa-plus"></span> قسم رئيسي</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-1"></div>
+        <div id="divforadd" class="col-md-7 mt-2">
+            <a class="btn-sm btn-primary rounded-0" asp-action="Create" asp-controller="BlogPosts"><span class="text-success fa fa-plus"></span> إضافة منشور</a>
+            <div class="input-group mb-3 mt-2">
+                <input id="inputsearch" type="text" class="form-control rounded-0" placeholder="إبحث في المنشورات" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="ss input-group-text btn btn-success" id="searching"><span class="fa fa-search"></span></button>
+                </div>
+                <div class="input-group-append">
+                    <button class="input-group-text btn btn-danger" id="cancelsearch"><span class="fa fa-times"></span></button>
+                </div>
+            </div>
+            <table id="poststable" class="table mt-2 bg-white table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BlogPost.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BlogPost.BlogTaxonomy)
+                        </th>
+
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.BlogPost.Body)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.Introduction)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.PostDateTime)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.DateModified)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.IsCommentsAllowed)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.Image)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.Source)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.File)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.IsApproved)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.IsHidden)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.IsFeatured)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.Reads)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.IsDeleted)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.ApplicationUser)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.Tags)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => model.BlogPost.BlogTaxonomy)
+                        </th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="realposts">
+                    @foreach (var item in ViewBag.onePageOfBlogPosts)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id"> @Common.substringc(item.Title, 0, 40)</a>
+                            </td>
+                            <td>
+                                <a asp-action="TaxonomyIndex" asp-route-taxonomyid="@item.BlogTaxonomyId">@item.BlogTaxonomy.Name</a>
+                            </td>
+                            @*<td>
+                        @Html.DisplayFor(modelItem => item.Body)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Introduction)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.PostDateTime)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.DateModified)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.IsCommentsAllowed)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Image)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Source)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.File)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.IsApproved)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.IsHidden)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.IsFeatured)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Reads)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.IsDeleted)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Tags)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.BlogTaxonomy.Id)
+                        </td>*@
+                            <td>
+                                <a title="اضافة صور" asp-action="Index" asp-controller="BlogPostImages" asp-route-postid="@item.Id"><span class="text-warning fa fa-list"></span></a>
+                                <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-edit"></span></a>
+                                <a title="حذف" asp-action="Delete" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+                            </td>
+                            <td>
+                                @if (item.IsFeatured)
+                                {
+                                    <span class="badge badge-info">مميز</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @*@if (Convert.ToInt32(ViewData["groupscount"]) > 10)
+            {*@
+            <span class="pager">
+                @Html.PagedListPager((IPagedList)ViewBag.onePageOfBlogPosts, page => Url.Action("Index", new { page }),
+                new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+                {
+                //DisplayItemSliceAndTotal=true,
+                ContainerDivClasses = new[] { "navigation" },
+                LiElementClasses = new[] { "page-item rounded-0" },
+                PageClasses = new[] { "page-link rounded-0" }
+                }
+                )
+            </span>
+            @*}*@
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function() {
+            $('#cancelsearch').hide()
+            $(document).on('click', '#cancelsearch', function() {
+                $('#inputsearch').val("");
+                $('#cancelsearch').hide();
+                $('#poststable').show();
+                $('.realposts').show()
+                $('.addedposts').hide()
+                $('.pager').show()
+                $('.addedtext').hide()
+                $('#searching').show()
+                $('.bgstr').remove()
+
+            });
+            $(document).on('click', '.ss', function() {
+                $('.loading').show()
+                $('.pager').hide()
+                var _url = '@Url.Action("BlogPostsSearch", "BlogPosts")';
+                var that = $(this);
+                $.ajax({
+                    type: "GET",
+                    url: _url,
+                    data: {
+                        ss: $('#inputsearch').val(), page: $(this).prop('id')
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //HERE
+                    dataType: 'json',
+                    success: function(result) {
+                        //alert(result.blogPostsCount)
+                        var pagesize = 10;
+                        $('.bgstr').remove()
+                        $('.realposts').hide()
+                        $('.addedposts').remove()
+                        $('#cancelsearch').show()
+                        $('#searching').hide()
+                        var count = Object.keys(result.blogPosts).length;
+                        $('#poststable').append('<tbody class="addedposts"></tbody>');
+                        if (count == 0) {
+                            $('#poststable').hide();
+                            $('#divforadd').append('<div class="bg-white addedtext"><p class="text-center">لا توجد نتائج</p></div>')
+                        }
+                        for (i = 0; i < count; i++) {
+                            var str = '<tr><td><a href="https://localhost:44342/BlogPosts/Details/' + result.blogPosts[i].id + '">' + result.blogPosts[i].title + '</a></td><td><a href="https://localhost:44342/BlogPosts/Delete/' + result.blogPosts[i].id + '"><span class="text-danger fa fa-trash"></span><a/></a><a href="https://localhost:44342/BlogPosts/Edit/' + result.blogPosts[i].id + '"> <span class="fa fa-pen"></span><a/></td></tr>'
+                            $('.addedposts').append(str)
+                        }
+                        if (result.blogPostsCount >= 1 && result.blogPostsCount > pagesize) {
+                            var pagstr = ('<div class="col-md-12 bgstr mt-1"><nav aria-label="Page navigation example"><ul class="pagination justify-content-end pull-right"><li class="page-item"><a class="page-link rounded-0 ss previous" id="1" tabindex="-1">السابق</a></li>')
+                            var j = 1;
+                            for (i = 0; i < result.blogPostsCount; i += pagesize) {
+                                pagstr += '<li class="page-item"><a class="page-link pagercheck ss" id="' + j + '">' + j + '</a></li>'
+                                j++
+                            }
+                            pagstr += '<li class="page-item"><a class="page-link rounded-0 next ss" id="2">التالي</a></li></ul></nav>'
+
+                            $('#divforadd').append(pagstr)
+                        }
+                        if (that.hasClass('page-link')) {
+                            var next = parseInt(that.prop('id')) + 1;
+                            var previous = parseInt(that.prop('id')) - 1;
+                            if (that.prop('id') == $('.pagercheck').last().prop('id')) {
+                                $('.next').hide();
+                            }
+                            if (that.prop('id') == $('.pagercheck').first().prop('id') || !that.hasClass('page-link')) {
+                                $('.previous').hide();
+                            }
+                            $('.previous').prop('id', previous)
+                            $('.next').prop('id', next)
+                        }
+                    },
+                    error: function(xhr, status, err,) {
+                        alert(err.toString(), 'Error - LoadListItemsHelper');
+
+                    },
+                    complete: function(result, jqXHR, status) {
+                        $('.loading').hide()
+                        if (!that.hasClass('page-link')) {
+                            $('.previous').hide();
+                            $('.pagercheck').first().parent().addClass('active')
+                        }
+                        else {
+
+                            $('.pagercheck').each(function() {
+                                if ($(this).html() == that.prop('id')) {
+                                    $(this).parent().addClass('active');
+                                }
+                                else {
+                                    $(this).parent().removeClass('active')
+                                }
+                            });
+                        }
+
+
+                    }
+
+                });
+            });
+        });
+    </script>
+
+}

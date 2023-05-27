@@ -1,0 +1,40 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{ 
+    ApplicationUser currentuser = await UserManager.GetUserAsync(User);
+}
+@foreach (var item in Model.NavMenus.OrderByDescending(n => n.indx))
+{
+    <li class="linav dropdown">
+        @if (Model.NavMenuItems.Where(n => n.NavMenuId == item.Id).Any())
+        {
+            <a class="anav dropdown-toggle" data-toggle="dropdown" aria-haspopup="" href="@item.Url"><strong>@item.Name <span class="@item.Icon"></span></strong></a>
+            <ul class="dropdown-menu mr-n5 rounded-0" role="menu" aria-labelledby="navbarDropdownMenuLink">
+                @foreach (var i in Model.NavMenuItems.Where(n => n.NavMenuId == item.Id).OrderBy(n => n.indx))
+                {
+                    @if (Model.NavMenuItemSubs.Where(n => n.NavMenuItemId == i.Id).Any())
+                    {
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-item dropdown-toggle text-dark subanav"><strong>@i.Name </strong></a>
+                            <ul class="dropdown-menu rounded-0 sub">
+                                @foreach (var j in Model.NavMenuItemSubs.Where(n => n.NavMenuItemId == i.Id))
+                                {
+                                    <li><a class="dropdown-item text-dark" href="@j.Url"><strong> @j.Name </strong></a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="@i.Url" class="dropdown-item text-dark"><strong>@i.Name </strong></a></li>
+                    }
+                }
+            </ul>
+        }
+        else
+        {
+            <a class="anav" href="@item.Url"><strong>@item.Name </strong></a>
+        }
+    </li>
+}   

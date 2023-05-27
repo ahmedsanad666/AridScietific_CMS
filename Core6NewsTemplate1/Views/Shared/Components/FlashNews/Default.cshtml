@@ -1,0 +1,5 @@
+﻿@model NavViewModel
+@foreach (var item in Model.SliderBlogPosts.OrderByDescending(s=>s.PostDateTime).Take(4))
+{
+    <div class="text-truncate"><a class="text-secondary" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id">@Common.substringc(item.Title,0,40)</a></div>
+}

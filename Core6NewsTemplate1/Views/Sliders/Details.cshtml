@@ -1,0 +1,50 @@
+﻿@model WebOS.Models.Slider
+
+@{
+    ViewData["Title"] = "معلومات بانر";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="row">
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnTitle)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SubTitle)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnSubTitle)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.indx)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AddDate)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ContentAlignment)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UrlText)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnUrlText)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>

@@ -1,0 +1,53 @@
+﻿@model WebOS.Models.BlogTaxonomy
+
+@{
+    ViewData["Title"] = "التعديل على " + Model.Name;
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+    <h4>التعديل على "@Model.Name"</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnName" class="control-label"></label>
+                    <input asp-for="EnName" class="form-control" />
+                    <span asp-validation-for="EnName" class="text-danger"></span>
+                </div>
+                <div class="mb-3" hidden>
+                    <label asp-for="Sub" class="control-label"></label>
+                    <input asp-for="Sub" class="form-control" />
+                    <span asp-validation-for="Sub" class="text-danger"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsFeatured" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="حفظ" class="btn btn-success rounded-0" />
+                    <a asp-action="Index" asp-controller="BlogPosts" class="btn btn-primary rounded-0">رجوع</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

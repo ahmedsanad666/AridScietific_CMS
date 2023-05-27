@@ -1,0 +1,338 @@
+﻿@model WebOS.Models.MessageViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currenUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "الرسائل";
+}
+<h3 class="text-center">الرسائل</h3>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-4" style="">
+            <form asp-action="Index">
+                <div class="input-group">
+                    <input name="ss" value="@ViewData["ss"]" type="text" class="form-control input-sm" placeholder="إبحث">
+                    <div class="input-group-btn">
+                        @if (ViewData["ss"].ToString() == "")
+                        {
+                            <button class="btn rounded-0 btn-primary input-sm" type="submit">
+                                <small><i class="fa fa-search center-block"></i></small>
+                            </button>
+                        }
+                        else
+                        {
+                            <button id="remove" class="btn rounded-0 btn-danger input-sm" type="submit">
+                                <small><i class="fa fa-times center-block"></i></small>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </form>
+
+            <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+                <li class="nav-item"><a name="inbox" href="#inbox" data-toggle="tab" class="nav-link active text-primary">الوارد&nbsp;<span class="badge badge-pill badge-primary">@Model.InboxMessagesCount</span></a></li>
+                <li class="nav-item"><a name="sent" href="#sent" data-toggle="tab" class="nav-link text-primary">المرسل&nbsp;<span class="badge  badge-pill badge-primary">@Model.SentMessagesCount</span></a></li>
+            </ul>
+            <div class="tab-content">
+                <h6>&nbsp;</h6>
+                <div class="tab-pane fade show in active" id="inbox">
+                    @if (Model.InboxMessages.Count() > 0)
+                    {
+                        @foreach (var item in Model.InboxMessages.OrderByDescending(m => m.LastActivitydate))
+                        {
+                            <div data-target="@item.Id" class="col-lg-12 border border-primary bg-light mt-1">
+                                <div class="col-lg-2">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.FromApplicationUserId">
+                                        <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.FromApplicationUser.ImageProfile)"
+                                             height="40" width="40" class="rounded-circle img-responsive center-block" />
+                                    </a>
+                                </div>
+                                <div class="col-lg-10">
+                                    @if (Model.messageReplies.Where(m => m.MessageId == item.Id && m.IsRead == false && currenUser.Id != m.ApplicationUserId).Any() || (item.IsRead==false && item.DateOfRead==item.LastActivitydate))
+                                    {
+                                        <a style="cursor:pointer" name="@item.Id" title="@item.Id" class="isread text-dark font-weight-bolder">@item.Subject</a>
+                                    }
+                                    else
+                                    {
+                                        <a style="cursor:pointer" name="@item.Id" title="@item.Id" class="isread text-info">@item.Subject</a>
+                                    }
+                                    <br /><h6 class="text-center pull-right" title="الوقت">
+                                        <small><span class="fa fa-hourglass"></span>&nbsp; @Common.GetDate(item.LastActivitydate)</small>
+                                    </h6>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h5>لا توجد رسائل واردة</h5>
+                    }
+                    @if (Model.InboxMessages.Count() < Model.InboxMessagesCount)
+                    {
+                        <a asp-action="Index" asp-route-num="@Model.InboxMessages.Count()" class="btn rounded-0 btn-info col-lg-12 mt-1">المزيد</a>}
+                </div>
+                <div class="tab-pane fade show in" id="sent">
+                    @if (Model.SentMessages.Count() > 0)
+                    {
+
+                        @foreach (var item in Model.SentMessages.OrderByDescending(m => m.LastActivitydate))
+                        {
+                            <div class="col-lg-12 border border-primary bg-light mt-1">
+                                <div class="col-lg-2">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ToApplicationUserId">
+                                        <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.ToApplicationUser.ImageProfile)"
+                                             height="40" width="40" class="rounded-circle img-responsive center-block" />
+                                    </a>
+                                </div>
+                                <div class="col-lg-10">
+                                    @if (Model.messageReplies.Where(m => m.MessageId == item.Id && m.IsRead == false && currenUser.Id != m.ApplicationUserId).Any())
+                                    {
+                                        <a style="cursor:pointer" name="@item.Id" title="@item.Id" class="isread text-dark font-weight-bolder">@item.Subject</a>
+                                    }
+                                    else
+                                    {
+                                        <a style="cursor:pointer" name="@item.Id" title="@item.Id" class="isread text-info">@item.Subject</a>
+                                    }
+                                    <br /><h6 class="text-center pull-right" title="الوقت">
+                                        <small><span class="fa fa-hourglass"></span>&nbsp; @Common.GetDate(item.LastActivitydate)</small>
+                                    </h6>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h5>لا توجد رسائل مرسلة</h5>
+                    }
+                    @if (Model.SentMessages.Count() < Model.SentMessagesCount)
+                    {
+                        <a asp-action="Index" asp-route-num="@Model.InboxMessages.Count()" class="btn rounded-0 btn-info col-lg-12 mt-1 h6">المزيد</a>}
+                </div>
+            </div>
+
+        </div>
+        <div id="refresh" class="col-lg-8" style="padding-bottom:20px">
+            <h3>&nbsp;</h3>
+            @foreach (var item in Model.Messages)
+            {
+                <div id="@item.Id" class="col-lg-12 border border-dark bg-light div">
+                    <h4 class="text-center">@item.Subject</h4>
+                    <h5 class="">@item.Content</h5>
+                    @if (item.Attachment != null)
+                    {<a class="pull-left text-success" href="@Url.Content("~/" + @WebOS.Properties.Resources.Secured + "/" + item.Attachment)" width="280" height="200">
+                            <small> تحميل الملف</small>
+                        </a>
+                    }
+                    <small class="pull-left"><span class="label label-info">@Common.GetDate(item.DateOfRecord)</span></small>
+                    @if (currenUser.Id == item.FromApplicationUserId && item.IsRead == true)
+                    {
+                        <small class="pull-left"><span title="@item.DateOfRead" class="fa fa-check text-success"></span>تأريخ القراءة: @item.DateOfRead</small>}
+
+                    <!-- Left-aligned media object -->
+                    <br />
+                    <hr />
+                    <div>
+                        @foreach (var i in Model.messageReplies.Where(m => m.MessageId == item.Id))
+                        {
+                            @if (i.ApplicationUserId == currenUser.Id)
+                            {
+                                <div class="border border-primary bg-white mt-1">
+                                    <div class="media-left">
+                                        <img onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + i.ApplicationUser.ImageProfile)"
+                                             height="40" width="40" class="rounded-circle img-responsive center-block" /> @i.ApplicationUser.ArName
+                                        </div>
+                                    <div class="media-body">
+                                        <small class="media-heading pull-left text-info">@Common.GetDate(i.DateOfRecord)</small><h6>&nbsp;</h6>
+                                        <p>@Html.Raw(i.Content)</p>
+                                        @if (i.Attachment != null)
+                                        {
+                                            <a class="pull-left text-success" href="@Url.Content("~/" + @WebOS.Properties.Resources.Secured + "/" + i.Attachment)" width="280" height="200">
+                                                <small> تحميل الملف</small>
+                                            </a>
+                                        }
+                                        @if (i.IsRead == true)
+                                        {
+                                            <small class=" "><span title="@i.DateOfRead" class="fa fa-check text-success"></span>تأريخ القراءة: @item.DateOfRead </small>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <!-- Right-aligned media object -->
+                                <div class="media border border-primary bg-white mt-1">
+                                    <div class="media-body media-right">
+                                        <h5 class="media-heading pull-left">
+                                            @i.ApplicationUser.ArName
+                                            <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + i.ApplicationUser.ImageProfile)"
+                                                 height="40" width="40" class="rounded-circle img-responsive center-block" />
+                                        </h5><h6 class="media-heading pull-right text-info">@Common.GetDate(i.DateOfRecord)</h6><br />
+                                        <h6>@Html.Raw(i.Content)</h6>
+                                        @if (i.Attachment != null)
+                                        {
+                                            <a class="text-success" href="@Url.Content("~/" + @WebOS.Properties.Resources.Secured + "/" + i.Attachment)">
+                                                <small> تحميل الملف</small>
+                                            </a>
+                                        }
+
+                                    </div>
+                                    <br />
+                                    <div class="pull-left">
+                                    </div>
+
+
+                                </div>
+                            }
+
+                        }
+                    </div>
+
+                    <br />
+                    <div class="col-lg-12 border border-primary bg-white mt-1">
+                        <br /> <form asp-action="CreateComment" enctype="multipart/form-data">
+                            <input hidden value="" />
+                            <label class="col-lg-1">ملف</label>
+                            <input name="file" type="file" accept=".docx,.pdf" class="btn rounded-0 btn-primary col-lg-11" />
+                            @*<div class="col-lg-2"></div>
+                                <input type="hidden" max="" class="form-control" />*@
+                            <label class="col-lg-1">الرد</label>
+                            <textarea class="form-control col-lg-11 mt-1" name="reply"></textarea>
+                            @*<div class="col-lg-6"></div>*@
+                            <div class="col-lg-6"></div>
+                            <a asp-action="Index" asp-route-id="@currenUser.Id" asp-route-currentmessageid="@item.Id" asp- name="@item.Id" class="btn rounded-0 btn-sm rounded-0  btn-info addreply">إرسال</a>
+                            <h6>&nbsp;</h6>
+                        </form>
+                    </div>
+                    <h6>&nbsp;</h6>
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+    <input type="hidden" class="cuid" value="@currenUser.Id" />
+    <input type="hidden" class="cumessage" value="@ViewData["currentmessageid"]" />
+    <input type="hidden" class="sentorinbox" value="@ViewData["sentorinbox"]" />
+
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            if ($(".sentorinbox").val() == "sent") {
+                $('[name="sent"]').parent().addClass("active")
+                $('[name="inbox"]').parent().removeClass("active")
+                $('#sent').addClass("in active")
+                $('#inbox').removeClass("in active")
+            }
+            else if ($(".sentorinbox").val() == "inbox") {
+                $('[name="sent"]').parent().removeClass("active")
+                $('[name="inbox"]').parent().addClass("active")
+                $('#sent').removeClass("in active")
+                $('#inbox').addClass("in active")
+            }
+            $(".addreply").click(
+
+                function () {
+
+                    {
+
+                                var formData = new FormData();
+                        formData.append('file', $(this).siblings("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                        formData.append('reply', $(this).siblings("[name='reply']").val()); // myFile is the input type="file" control
+                        formData.append('messageid', $(this).prop('name')); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("AddReply", "Messages")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    var x = $('.cumessage').val();
+                                    $("#refresh").load(window.location + ' #'+x+'');
+                                },
+                                error: function (jqXHR) {
+
+                                },
+                                complete: function (result,jqXHR, status) {
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.isread').click(function () {
+                //alert($('.cuid').val());
+                $('.cumessage').val($(this).prop('name'))
+                var _url = '@Url.Action("IsRead", "Messages")';
+                var formData = new FormData();
+                formData.append('mid', $(this).prop('name')); // myFile is the input type="file" control
+                formData.append('cuid', $(".cuid").val()); // myFile is the input type="file" control
+
+                $.ajax({
+                    url: _url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,  // tell jQuery not to set contentType
+                    success: function (result) {
+                    },
+                    error: function (jqXHR) {
+                    },
+                    complete: function (jqXHR, status) {
+                    }
+
+                });
+
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".div").hide();
+            $('.div').each(function () {
+                if ($(this).attr('id') == $(".cumessage").val()) {
+                    $(".div").hide();
+                    $(this).show();
+                }
+            });
+            $('.isread').click(function () {
+                var c = $(this).prop('name');
+                $('.div').each(function () {
+                    if ($(this).attr('id') == c) {
+                        $(".div").hide();
+                        $(this).show();
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('a[href*="inbox"]').click(function () {
+                $(".div").hide();
+            });
+            $('a[href*="sent"]').click(function () {
+                $(".div").hide();
+            });
+
+        });
+    </script>
+    <script>
+        $('#remove').click(function () {
+            $('input[name="ss"]').removeAttr("value")
+        });
+    </script>
+
+}

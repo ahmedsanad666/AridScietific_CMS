@@ -1,0 +1,17 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+@if(culture.Name=="en"){
+    <title>@Model.SystemSettings.EngName</title>
+}
+else
+{
+    <title>@Model.SystemSettings.AraName</title>
+}
+<meta content="@Model.SystemSettings.Keywords" name="keywords">
+    <meta content="@Model.SystemSettings.About | @Model.SystemSettings.EnAbout" name="description">
+        <!-- Favicon -->
+    <link asp-append-version="true" href="/Files/@Model.SystemSettings.FavIcon" rel="icon">

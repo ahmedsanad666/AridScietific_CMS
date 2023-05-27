@@ -1,0 +1,96 @@
+﻿@model WebOS.Models.Slider
+
+@{
+    ViewData["Title"] = "تعديل بانر";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+    <h4>تعديل بانر "@Model.Title"</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnTitle" class="control-label"></label>
+                    <input asp-for="EnTitle" class="form-control" />
+                    <span asp-validation-for="EnTitle" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubTitle" class="control-label"></label>
+                    <textarea rows="3" asp-for="SubTitle" class="form-control"></textarea>
+                    <span asp-validation-for="SubTitle" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnSubTitle" class="control-label"></label>
+                    <textarea rows="3" asp-for="EnSubTitle" class="form-control"></textarea>
+                    <span asp-validation-for="EnSubTitle" class="text-danger"></span>
+                </div>
+                <div class="mb-3" id="img">
+                    <label asp-for="Image" class="control-label"></label>*<br />
+                    <img hidden width="400" height="300" id="img1" class="img-rounded center-block" src="" />
+                    <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                    <input placeholder="هذا الحقل ضروري" readonly asp-for="Image" id="fileinput" class="form-control input-sm" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="indx" class="control-label"></label>
+                    <input asp-for="indx" class="form-control" />
+                    <span asp-validation-for="indx" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AddDate" class="control-label"></label>
+                    <input asp-for="AddDate" class="form-control" />
+                    <span asp-validation-for="AddDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ContentAlignment" class="control-label"></label>
+                    <select asp-items="@Html.GetEnumSelectList<ContentAlignment>()" asp-for="ContentAlignment" class="form-control"></select>
+                    <span asp-validation-for="ContentAlignment" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Url" class="control-label"></label>
+                    <input asp-for="Url" class="form-control" />
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="UrlText" class="control-label"></label>
+                    <input asp-for="UrlText" class="form-control" />
+                    <span asp-validation-for="UrlText" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnUrlText" class="control-label"></label>
+                    <input asp-for="EnUrlText" class="form-control" />
+                    <span asp-validation-for="EnUrlText" class="text-danger"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="حفظ" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">رجوع</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

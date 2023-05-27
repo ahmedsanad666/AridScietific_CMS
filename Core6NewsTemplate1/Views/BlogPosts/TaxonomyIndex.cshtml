@@ -1,0 +1,178 @@
+﻿@model WebOS.Models.BlogViewModel
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "قائمة المدونات";
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <h4>مواضيع تابعة لقسم "@ViewData["taxonomyname"]"</h4>
+            </div>
+            <div id="divforadd" class="col-md-8 mt-2">
+                @if (Convert.ToInt32(ViewData["postscount"].ToString()) > 0)
+                {
+                    <table id="poststable" class="table mt-2 bg-white table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BlogPost.Title)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BlogPost.BlogTaxonomy)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="realposts">
+                            @foreach (var item in ViewBag.onePageOfBlogPosts)
+                            {
+                                <tr>
+                                    <td>
+                                        <a class="text-dark" asp-action="Details" asp-route-id="@item.Id"> @Html.Raw(item.Title)</a>
+                                    </td>
+                                    <td>
+                                        <a class="text-dark" asp-action="TaxonomyIndex" asp-route-taxonomyid="@item.BlogTaxonomyId">@item.BlogTaxonomy.Name</a>
+                                    </td>
+                                    @if (User.IsInRole(RoleName.Admins))
+                                    {
+                                        <td>
+                                            <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-pen"></span></a>
+                                            <a title="حذف" asp-action="Delete" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <span class="pager">
+                        @Html.PagedListPager((IPagedList)ViewBag.onePageOfBlogPosts, page => Url.Action("TaxonomyIndex", new { page, taxonomyid = Context.Request.Query["taxonomyid"] }),
+                    new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+                    {
+                    //DisplayItemSliceAndTotal=true,
+                    ContainerDivClasses = new[] { "navigation" },
+                    LiElementClasses = new[] { "page-item rounded-0" },
+                    PageClasses = new[] { "page-link rounded-0" }
+                    }
+                    )
+                    </span>
+
+                }
+                else
+                {
+                    <p>لا يوجد مقالات خاصة بهذا الفرع</p>
+                }
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function() {
+            $('#cancelsearch').hide()
+            $(document).on('click', '#cancelsearch', function() {
+                $('#inputsearch').val("");
+                $('#cancelsearch').hide();
+                $('#poststable').show();
+                $('.realposts').show()
+                $('.addedposts').hide()
+                $('.pager').show()
+                $('.addedtext').hide()
+                $('#searching').show()
+                $('.bgstr').remove()
+
+            });
+            $(document).on('click', '.ss', function() {
+                $('.loading').show()
+                $('.pager').hide()
+                var _url = '@Url.Action("BlogPostsSearch", "BlogPosts")';
+                var that = $(this);
+                $.ajax({
+                    type: "GET",
+                    url: _url,
+                    data: {
+                        ss: $('#inputsearch').val(), page: $(this).prop('id')
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    //HERE
+                    dataType: 'json',
+                    success: function(result) {
+                        //alert(result.blogPostsCount)
+                        var pagesize = 1;
+                        $('.bgstr').remove()
+                        $('.realposts').hide()
+                        $('.addedposts').remove()
+                        $('#cancelsearch').show()
+                        $('#searching').hide()
+                        var count = Object.keys(result.blogPosts).length;
+                        $('#poststable').append('<tbody class="addedposts"></tbody>');
+                        if (count == 0) {
+                            $('#poststable').hide();
+                            $('#divforadd').append('<div class="bg-white addedtext"><p class="text-center">لا توجد نتائج</p></div>')
+                        }
+                        for (i = 0; i < count; i++) {
+                            var str = '<tr><td><a href="https://localhost:44342/BlogPosts/Details/' + result.blogPosts[i].id + '">' + result.blogPosts[i].title + '</a></td><td><a href="https://localhost:44342/BlogPosts/Delete/' + result.blogPosts[i].id + '"><span class="text-danger fa fa-trash"></span><a/></a><a href="https://localhost:44342/BlogPosts/Edit/' + result.blogPosts[i].id + '"> <span class="fa fa-pen"></span><a/></td></tr>'
+                            $('.addedposts').append(str)
+                        }
+                        if (result.blogPostsCount >= 1 && result.blogPostsCount > pagesize) {
+                            var pagstr = ('<div class="col-md-12 bgstr mt-1"><nav aria-label="Page navigation example"><ul class="pagination justify-content-end pull-right"><li class="page-item"><a class="page-link rounded-0 ss previous" id="1" tabindex="-1">السابق</a></li>')
+                            var j = 1;
+                            for (i = 0; i < result.blogPostsCount; i += pagesize) {
+                                pagstr += '<li class="page-item"><a class="page-link pagercheck ss" id="' + j + '">' + j + '</a></li>'
+                                j++
+                            }
+                            pagstr += '<li class="page-item"><a class="page-link rounded-0 next ss" id="2">التالي</a></li></ul></nav>'
+
+                            $('#divforadd').append(pagstr)
+                        }
+                        if (that.hasClass('page-link')) {
+                            var next = parseInt(that.prop('id')) + 1;
+                            var previous = parseInt(that.prop('id')) - 1;
+                            if (that.prop('id') == $('.pagercheck').last().prop('id')) {
+                                $('.next').hide();
+                            }
+                            if (that.prop('id') == $('.pagercheck').first().prop('id') || !that.hasClass('page-link')) {
+                                $('.previous').hide();
+                            }
+                            $('.previous').prop('id', previous)
+                            $('.next').prop('id', next)
+                        }
+                    },
+                    error: function(xhr, status, err,) {
+                        alert(err.toString(), 'Error - LoadListItemsHelper');
+
+                    },
+                    complete: function(result, jqXHR, status) {
+                        $('.loading').hide()
+                        if (!that.hasClass('page-link')) {
+                            $('.previous').hide();
+                            $('.pagercheck').first().parent().addClass('active')
+                        }
+                        else {
+
+                            $('.pagercheck').each(function() {
+                                if ($(this).html() == that.prop('id')) {
+                                    $(this).parent().addClass('active');
+                                }
+                                else {
+                                    $(this).parent().removeClass('active')
+                                }
+                            });
+                        }
+
+
+                    }
+
+                });
+            });
+        });
+    </script>
+
+}

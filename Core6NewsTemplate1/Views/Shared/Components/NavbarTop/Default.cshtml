@@ -1,0 +1,118 @@
+﻿@model NavViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+
+
+<header class=" NavHeader">
+
+    <nav class="d-flex flex-row container justify-content-between py-4">
+        <div class="row w-100  align-items-center">
+            <div class="col">
+                <h3 class="brand">
+                    @*   @if (Model.appSettings.Logo != null)
+                    {
+
+                    <img src="@Model.appSettings.Logo" />
+                    }
+                    *@
+                    @if (Model.SystemSettings.SmallLogo != null)
+                    {
+                        <img src="@Model.SystemSettings.SmallLogo" alt="...">
+                    }
+
+
+
+                </h3>
+            </div>
+            <div class="col-lg-6  d-xl-flex d-none navMiddelList justify-content-center align-items-center">
+                <ul class="list-unstyled d-flex justify-content-between">
+
+                    @if (culture.Name == "en")
+                    {
+                        foreach (var item in Model.NavMenus.Where(n => n.NavMenuPosision == NavMenuPosision.Top).OrderBy(n => n.indx))
+                        {
+                        
+                           <li>
+
+                                <a href="@item.Url" class="nav-item nav-link ">@item.EnName</a>
+                           </li>
+                     
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in Model.NavMenus.Where(n => n.NavMenuPosision == NavMenuPosision.Top).OrderBy(n => n.indx))
+                        {
+                          <li>
+
+                                <a href="@item.Url" class="nav-item nav-link ">@item.Name</a>
+                          </li>
+                           
+                        }
+                    }
+
+                    <partial name="_loginPartial" />
+
+                    @if (User.IsInRole(RoleName.Admins))
+                    {
+                        <a asp-action="Control" asp-controller="ApplicationUsers" class="nav-item nav-link">@Localizer["Admin"]</a>
+                    }
+                  
+
+                </ul>
+            </div>
+            <div class="col gap-5 d-flex justify-content-end">
+                <partial name="_Culture" />
+
+
+                <i class="bi bi-list " id="humburg"></i>
+            </div>
+        </div>
+
+    </nav>
+</header>
+<div class="subMenu">
+    <div class="subMenu_info">
+@*
+        <div class="row px-lg-2">
+            @foreach (var el in Model.subMenu)
+            {
+
+                @if (culture == "en")
+                {
+
+                    <div class="col-6 col-md-3 ">
+                        <h5>@el.enName</h5>
+                        <ul>
+                            <li>@el.enarsubItem1</li>
+                            <li>@el.ensubItem2</li>
+                            <li>@el.ensubItem3</li>
+
+
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-6 col-md-3 ">
+                        <h4>@el.arName</h4>
+                        <ul>
+                            <li>@el.arsubItem1</li>
+                            <li>@el.arsubItem2</li>
+                            <li>@el.arsubItem3</li>
+
+
+                        </ul>
+                    </div>
+                }
+            }
+
+
+        </div>*@
+
+    </div>
+</div>
+

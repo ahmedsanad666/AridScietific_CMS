@@ -1,0 +1,139 @@
+﻿@model IEnumerable<WebOS.Models.BlogPost>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+    ViewData["Title"] = "Wall";
+}
+
+@*<div class="blognav mycontainer">
+        <p><span class="fa fa-pencil"></span> مدونات</p>
+        <a asp-action="Create" asp-controller="BlogPosts">دون مع الصفا</a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <img src="~/Pictures/@Model.Where(b => b.IsFeatured).OrderByDescending(b => b.PostDateTime).First().Image" />
+                <p class="title text-dark"><a class="text-dark" asp-controller="BlogPosts" asp-action="Details" asp-route-id="@Model.Where(b => b.IsFeatured).OrderByDescending(b => b.PostDateTime).First().Id">@Html.Raw(@Common.substringc(Model.Where(b => b.IsFeatured).OrderByDescending(b => b.PostDateTime).First().Title, 0, 60))</a></p>
+                <span class="body">@Html.Raw(@Common.substringc(Model.Where(b => b.IsFeatured).OrderByDescending(b => b.PostDateTime).First().Body, 0, 120))</span>
+                <p class="author"><span class="fa fa-pencil"></span> @Model.Where(b => b.IsFeatured).OrderByDescending(b => b.PostDateTime).First().Source  &nbsp;&nbsp;&nbsp;  @Html.DisplayFor(model => model.Where(b => b.IsFeatured).OrderByDescending(b => b.PostDateTime).First().PostDateTime)</p>
+            </div>
+            <div class="col-sm">
+                One of three columns
+            </div>
+        </div>
+    </div>*@
+<partial name="_ViewHeader" />
+<div class="px-5">
+    <div style="height:100%;margin-top:0;min-height:55vh;">
+        <div class="blognav">
+            <div class="mycontainer d-flex flex-nowrap align-items-center justify-content-between">
+                <p>
+                    <span class="fa fa-pencil"></span> @Localizer["Latest Blogs"]
+                </p>
+                <div>
+                    <button><span class="fa fa-search"></span></button>
+                    <span>&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <div class="blogsearch  mb-4">
+            <form asp-action="BlogsSearch">
+                <input type="search" class="form-control w-100" />
+            </form>
+        </div>
+        <div class="">
+            <div class="mycontainer wholebody row rowmarginedit">
+                <main>
+                    <div class="album py-5 bg-light">
+                        <div class="container">
+
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                @if (culture.Name == "en")
+                                {
+                                    @foreach (var item in ViewBag.onePageOfBlogPosts)
+                                    {
+                                        <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id">
+                                            <div class="col">
+                                                <div class="card shadow-sm">
+                                                    <img src="/Pictures/@item.Image" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c" />
+
+                                                    <div class="card-body">
+                                                        <p class="card-text">@Common.substringc(@item.EnTitle,0,50)</p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="btn-group">
+                                                                <button type="button" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">@Localizer["read"]</button>
+                                                            </div>
+                                                            <small class="text-muted">@item.PostDateTime</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var item in ViewBag.onePageOfBlogPosts)
+                                    {
+                                        <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id">
+                                            <div class="col">
+                                                <div class="card shadow-sm">
+                                                    <img src="/Pictures/@item.Image" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c" />
+
+                                                    <div class="card-body">
+                                                        <p class="card-text">@Common.substringc(@item.Title,0,50)</p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="btn-group">
+                                                                <button type="button" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">@Localizer["read"]</button>
+                                                            </div>
+                                                            <small class="text-muted">@item.PostDateTime</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+                <div class="col-sm-8 allposts">
+
+                    <span class="pager">
+                        @Html.PagedListPager((IPagedList)ViewBag.onePageOfBlogPosts, page => Url.Action("Wall", new { page }),
+                        new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+                        {
+                        //DisplayItemSliceAndTotal=true,
+                        ContainerDivClasses = new[] { "navigation" },
+                        LiElementClasses = new[] { "page-item rounded-0" },
+                        PageClasses = new[] { "page-link rounded-0" }
+                        }
+                        )
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.body-container').removeClass('container');
+    </script>
+    <script>
+        $('.blogsearch').hide();
+
+        $('.blognav').children('div').children('div').children('button').click(function() {
+            $('.blogsearch').slideToggle();
+
+        });
+    </script>
+}

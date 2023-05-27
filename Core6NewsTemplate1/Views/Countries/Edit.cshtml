@@ -1,0 +1,55 @@
+﻿@model WebOS.Models.Country
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+
+<h4>الدول</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="ArCountryName" class="control-label"></label>
+                <input asp-for="ArCountryName" class="form-control" />
+                <span asp-validation-for="ArCountryName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnCountryName" class="control-label"></label>
+                <input asp-for="EnCountryName" class="form-control" />
+                <span asp-validation-for="EnCountryName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CountryCode" class="control-label"></label>
+                <input asp-for="CountryCode" class="form-control" />
+                <span asp-validation-for="CountryCode" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ShortName" class="control-label"></label>
+                <input asp-for="ShortName" class="form-control" />
+                <span asp-validation-for="ShortName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Flag" class="control-label"></label>
+                <input asp-for="Flag" class="form-control" />
+                <span asp-validation-for="Flag" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="حفظ" class="btn rounded-0 btn-success" />
+                <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

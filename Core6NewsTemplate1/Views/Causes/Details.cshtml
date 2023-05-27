@@ -1,0 +1,54 @@
+﻿@model WebOS.Models.Cause
+
+@{
+    ViewData["Title"] = "مشاريع المنظمة";
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+
+}
+
+
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+    @if (culture.Name == "en")
+    {
+        <h4> @Model.Title</h4>
+        <hr />
+        <dl class="row">
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Field)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BriefDescription)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Body)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Image)
+            </dd>
+        </dl>
+    }
+    else
+    {
+        <h4> @Model.EnTitle</h4>
+        <hr />
+        <dl class="row">
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EnTitle)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EnField)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EnBriefDescription)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EnBody)
+            </dd>
+            <dd class="col-sm-10">
+                <img class="img-fluid" src="/Pictures/@Model.Image" />
+            </dd>
+        </dl>
+    }
+</div>

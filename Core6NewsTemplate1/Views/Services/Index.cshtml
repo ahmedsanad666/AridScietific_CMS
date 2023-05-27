@@ -1,0 +1,86 @@
+﻿@model IEnumerable<WebOS.Models.Service>
+
+@{
+    ViewData["Title"] = "الخدمات";
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+    <p>
+        <a asp-action="Create">اضافة خدمة</a>
+    </p>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnTitle)
+                    </th>
+                   @* <th>
+                        @Html.DisplayNameFor(model => model.BriefDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnBriefDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Body)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnBody)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                  @*  <th>
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>*@
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnTitle)
+                        </td>
+                       @* <td>
+                            @Html.DisplayFor(modelItem => item.BriefDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnBriefDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Body)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnBody)
+                        </td>*@
+                        <td>
+                           @* @Html.DisplayFor(modelItem => item.Image)*@
+                            <img src="/Pictures/@item.Image" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+                            
+                            <form asp-action="Delete">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="حذف"  /> 
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WebOS.Models.Country>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+<partial name="_ViewHeader" />
+<h1>الدول</h1>
+<partial name="_ViewHeader" />
+<div class="px-5">
+<p>
+    <a class="btn btn-primary rounded-0" asp-action="Create">إضافة دولة</a>
+</p>
+<table class="bg-white table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArCountryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnCountryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flag)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.onepageofcountries)
+        {
+            <tr>
+                <td>
+                    @item.ArCountryName
+
+                </td>
+                <td>
+                    @item.EnCountryName
+                </td>
+                <td>
+                    @item.CountryCode
+                </td>
+                <td>
+                    @item.ShortName
+                </td>
+                <td>
+                    @item.Flag
+                </td>
+                <td>
+                    <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id"><i style="font-family: FontAwesome;" class="fa fa-facebook"></i></a>
+                    <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pen"></i></a>
+                    <a title="حذف" asp-action="Delete" asp-route-id="@item.Id"><i class="text-danger fa fa-trash"></i></a>
+                    <a title="المدن" asp-action="Index" asp-controller="Cities" asp-route-cid="@item.Id"><i class="text-danger fa fa-list"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+<span class="pager">
+    @Html.PagedListPager((IPagedList)ViewBag.onepageofcountries, page => Url.Action("Index", new { page }),
+       new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+       {
+           //DisplayItemSliceAndTotal=true,
+           ContainerDivClasses = new[] { "navigation" },
+           LiElementClasses = new[] { "page-item rounded-0" },
+           PageClasses = new[] { "page-link rounded-0" }
+       }
+         )
+</span>
+

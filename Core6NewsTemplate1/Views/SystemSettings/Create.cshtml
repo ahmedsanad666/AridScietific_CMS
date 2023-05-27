@@ -1,0 +1,177 @@
+﻿@model WebOS.Models.SystemSettings
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_ViewHeader" />
+<div class="px-5">
+    <h4>اضافة اعدادت</h4>
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="AraName" class="control-label"></label>
+                    <input asp-for="AraName" class="form-control" />
+                    <span asp-validation-for="AraName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EngName" class="control-label"></label>
+                    <input asp-for="EngName" class="form-control" />
+                    <span asp-validation-for="EngName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Keywords" class="control-label"></label>
+                    <input asp-for="Keywords" class="form-control" />
+                    <span asp-validation-for="Keywords" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnAddress" class="control-label"></label>
+                    <input asp-for="EnAddress" class="form-control" />
+                    <span asp-validation-for="EnAddress" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="About" class="control-label"></label>
+                    <textarea asp-for="About" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="About" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnAbout" class="control-label"></label>
+                    <textarea asp-for="EnAbout" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="EnAbout" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LongAbout" class="control-label"></label>
+                    <textarea asp-for="LongAbout" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="LongAbout" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnLongAbout" class="control-label"></label>
+                    <textarea asp-for="EnLongAbout" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="EnLongAbout" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Vision" class="control-label"></label>
+                    <textarea asp-for="Vision" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Vision" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnVision" class="control-label"></label>
+                    <textarea asp-for="EnVision" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="EnVision" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ProjectsNumber" class="control-label"></label>
+                    <textarea asp-for="ProjectsNumber" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="ProjectsNumber" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EmployeesNumber" class="control-label"></label>
+                    <textarea asp-for="EmployeesNumber" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="EmployeesNumber" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BeneficiariesNumber" class="control-label"></label>
+                    <textarea asp-for="BeneficiariesNumber" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="BeneficiariesNumber" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="VolunteersNumber" class="control-label"></label>
+                    <textarea asp-for="VolunteersNumber" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="VolunteersNumber" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SmallLogo" class="control-label"></label>
+                    <input class="form-control" type="file" name="SmallLogofile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.jfif">
+                    <input asp-for="SmallLogo" class="form-control" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.jfif">
+                    <span asp-validation-for="SmallLogo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SmallLogo" class="control-label"></label>
+                    <input class="form-control"  type="file" name="SmallLogofile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.jfif">
+                    <span asp-validation-for="SmallLogo" class="text-danger"></span>
+                </div>
+                <div class="mb-3" hidden>
+                    <label asp-for="LargeLogo" class="control-label"></label>
+                    <input class="form-control"  type="file" name="LargeLogofile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.jfif">
+                    <span asp-validation-for="LargeLogo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3" hidden>
+                    <label asp-for="FavIcon" class="control-label"></label>
+                    <input class="form-control"  type="file" name="FavIconfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.jfif">
+                    <span asp-validation-for="FavIcon" class="text-danger"></span>
+                </div>
+                <div class="mb-3" hidden>
+                    <label asp-for="Footer" class="control-label"></label>
+                    <input class="form-control"  type="file" name="Footerfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif,.jfif">
+                    <span asp-validation-for="Footer" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AdminEmail" class="control-label"></label>
+                    <input asp-for="AdminEmail" class="form-control" />
+                    <span asp-validation-for="AdminEmail" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LaunchDate" class="control-label"></label>
+                    <input asp-for="LaunchDate" class="form-control" />
+                    <span asp-validation-for="LaunchDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="FB" class="control-label"></label>
+                    <input asp-for="FB" class="form-control" />
+                    <span asp-validation-for="FB" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Twitter" class="control-label"></label>
+                    <input asp-for="Twitter" class="form-control" />
+                    <span asp-validation-for="Twitter" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Linkedin" class="control-label"></label>
+                    <input asp-for="Linkedin" class="form-control" />
+                    <span asp-validation-for="Linkedin" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Youtube" class="control-label"></label>
+                    <input asp-for="Youtube" class="form-control" />
+                    <span asp-validation-for="Youtube" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Instagram" class="control-label"></label>
+                    <input asp-for="Instagram" class="form-control" />
+                    <span asp-validation-for="Instagram" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LastUpate" class="control-label"></label>
+                    <input asp-for="LastUpate" class="form-control" />
+                    <span asp-validation-for="LastUpate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="اضافة" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

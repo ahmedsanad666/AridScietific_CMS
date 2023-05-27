@@ -1,0 +1,107 @@
+﻿@model WebOS.Models.TicketViewModel
+
+@{
+    ViewData["Title"] = "التذاكر الخاصة بك";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p class="d-inline">
+    @*<h4 class="d-inline text-center">مركز المساعدة</h4>*@
+    <a class="btn btn-success rounded-0" asp-action="Create">اسأل مركز المساعدة</a>
+
+</p>
+<div class="row">
+    @if (Model.Tickets.Any())
+    {
+        <div class="col-lg-8 border border-dark bg-white mt-2">
+            <table class="table table-responsive bg-white">
+                <caption class="d-inline">التذاكر الخاصة بك</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ticket.Subject)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ticket.TicketOpenDate)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ticket.Status)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ticket.TicketCategory)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ticket.File)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tickets)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id">
+                                    @Html.DisplayFor(modelItem => item.Subject)
+                                </a>
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketOpenDate)
+                            </td>
+
+                            <td>
+                                @if (item.Status == true)
+                                {
+                                    <p style="color:green">مفتوحة</p>
+                                }
+
+                                else
+                                {
+                                    <p style="color:red">مغلقة</p>
+                                }
+                                @*@Html.DisplayFor(modelItem => item.Status)*@
+                            </td>
+                            <td>  @Html.DisplayFor(modelItem => item.TicketCategory.Name)</td>
+                            @if (item.File != null)
+                            {
+                                <td>
+                                    <a target="_blank" href="~/TicketFiles/@item.File">ملف مرفق</a>
+                                </td>
+                            }
+                            else if (item.File == null)
+                            {
+                                <td>
+                                    لايوجد
+                                </td>
+                            }
+                            <td>
+
+
+                                @*<a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">تفاصيل</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">حذف</a> |*@
+                                @*<a asp-controller="TicketReplies" asp-action="Create" asp-route-tid="@item.Id">اضف رد</a> |*@
+                                @*<a asp-controller="TicketReplies" asp-action="Index" asp-route-tid="@item.Id">تفاصيل</a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="col-12 border border-dark bg-white mt-2">
+            <p class="text-center">لم تقم بإرسال أي تذكرة بعد</p>
+        </div>
+    }
+</div>
+@*<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+    page-class="btn border" page-class-normal="btn btn-primary active"
+    page-class-selected="btn btn-success active" class="btn-group m-1"></div>*@

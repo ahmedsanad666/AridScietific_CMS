@@ -1,0 +1,107 @@
+﻿@model WebOS.Models.Cause
+
+
+
+@{
+    ViewData["Title"] = "اضافة مشروع";
+}
+
+
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+    <h4>إضافة مشروع</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnTitle" class="control-label"></label>
+                    <input asp-for="EnTitle" class="form-control" />
+                    <span asp-validation-for="EnTitle" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label col-lg-6">القسم </label>
+                    <select asp-for="CauseCategoryId" class="form-control" asp-items="ViewBag.CauseCategoryId"><option>إختر قسم </option></select>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Field" class="control-label"></label>
+                    <input asp-for="Field" class="form-control" />
+                    <span asp-validation-for="Field" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnField" class="control-label"></label>
+                    <input asp-for="EnField" class="form-control" />
+                    <span asp-validation-for="EnField" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BriefDescription" class="control-label"></label>
+                    <textarea asp-for="BriefDescription" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="BriefDescription" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnBriefDescription" class="control-label"></label>
+                    <textarea asp-for="EnBriefDescription" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="EnBriefDescription" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Body" class="control-label"></label>
+                    <textarea asp-for="Body" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Body" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnBody" class="control-label"></label>
+                    <textarea asp-for="EnBody" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="EnBody" class="text-danger"></span>
+                </div>
+                <div class="mb-3" id="img">
+                    <label asp-for="Image" class="control-label"></label>*<br />
+                    <img width="400" height="300" id="img1" class="img-rounded center-block" src="" />
+                    <input required type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                    <input placeholder="هذا الحقل ضروري" readonly asp-for="Image" id="fileinput" class="form-control input-sm" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="إضافة" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">رجوع</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#img1').hide();
+            $("#file").change(function() {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    $('#img1').fadeIn();
+                    var reader = new FileReader();
+                    reader.onload = function(e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

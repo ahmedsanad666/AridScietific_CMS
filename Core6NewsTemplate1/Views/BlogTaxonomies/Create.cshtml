@@ -1,0 +1,49 @@
+﻿@model WebOS.Models.BlogTaxonomy
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+    <h4>إضافة قسم رئيسي</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EnName" class="control-label"></label>
+                    <input asp-for="EnName" class="form-control" />
+                    <span asp-validation-for="EnName" class="text-danger"></span>
+                </div>
+                <div class="mb-3" hidden>
+                    <label asp-for="Sub" class="control-label"></label>
+                    <input value="0" asp-for="Sub" class="form-control" />
+                    <span asp-validation-for="Sub" class="text-danger"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsFeatured" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="إضافة" class="btn btn-success rounded-0" />
+                    <a class="pull-left btn btn-primary rounded-0" asp-action="Index" asp-controller="BlogPosts">رجوع</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

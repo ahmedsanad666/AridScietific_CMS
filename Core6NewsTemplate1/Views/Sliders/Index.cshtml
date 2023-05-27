@@ -1,0 +1,109 @@
+﻿@model IEnumerable<WebOS.Models.Slider>
+
+
+@{
+    ViewData["Title"] = "معلومات بانر";
+}
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+    <p>
+        <a asp-action="Create">اضافة بانر</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnTitle)
+                </th>
+               @* <th>
+                    @Html.DisplayNameFor(model => model.SubTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnSubTitle)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.indx)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContentAlignment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Url)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UrlText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnUrlText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>*@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnTitle)
+                    </td>
+                  @*  <td>
+                        @Html.DisplayFor(modelItem => item.SubTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnSubTitle)
+                    </td>*@
+                    <td>
+                      @*  @Html.DisplayFor(modelItem => item.Image)*@
+                        <img width="300" class="img-fluid" src="/Pictures/@item.Image" />
+                    </td>
+                   @* <td>
+                        @Html.DisplayFor(modelItem => item.indx)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContentAlignment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Url)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UrlText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnUrlText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>*@
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+                     
+                        <form asp-action="Delete">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="submit" value="حذف" /> 
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

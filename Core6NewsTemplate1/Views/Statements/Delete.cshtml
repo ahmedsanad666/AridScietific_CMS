@@ -1,0 +1,57 @@
+﻿@model WebOS.Models.Statement
+
+@{
+    ViewData["Title"] = "هل تريد بالفعل حذف ال statement";
+}
+
+@*<h1>Delete</h1>*@
+
+<h3>هل تريد بالفعل حذف ال statement</h3>
+<div>
+    <h4>Statement</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RecordDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RecordDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Details)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Destination)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Destination)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationUserId)
+        </dt>
+        <dd class = "col-sm-10">
+            <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUserId">@Html.DisplayFor(model => model.ApplicationUser.Id)</a>
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BalanceType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BalanceType)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger rounded-0" /> 
+        <a class="btn btn-primary rounded-0" asp-action="Index">رجوع</a>
+    </form>
+</div>

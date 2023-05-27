@@ -1,0 +1,86 @@
+﻿@model WebOS.Models.MessageViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>Create</h2>
+<h4>Message</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" method="get">
+            <div class="mb-3">
+                <label class="control-label">ابحث عن المستقبل</label>
+                <input id="srch" minlength="8" placeholder="ادخل اسم المستقبل او بريده الالكتروني الخاص به ثم اضغط زر بحث --ادخل ثمانية احرف على الاقل--" class="form-control" name="SearchString" />
+                @*<input type="hidden" name="jrepoid" value="@ViewData["jrepoid"]" />*@
+                <input type="submit" value="بحث" id="search" />
+        </form>
+        <br />
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3" id="app">
+                <label asp-for="Message.ToApplicationUserId" class="control-label"></label>
+                <input readonly required id="appuser" asp-for="Message.ToApplicationUserId" class="form-control" />
+                <span asp-validation-for="Message.ToApplicationUserId" class="text-danger"></span>
+
+            </div>
+
+
+            <div class="mb-3">
+                <label asp-for="Message.Subject" class="control-label"></label>
+                <input asp-for="Message.Subject" class="form-control" />
+                <span asp-validation-for="Message.Subject" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Message.Content" class="control-label"></label>
+                <textarea asp-for="Message.Content" class="control-label"></textarea>
+                <span asp-validation-for="Message.Content" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3">
+                <label asp-for="Message.Attachment" class="control-label"></label>
+                <input asp-for="Message.Attachment" class="form-control" />
+                <span asp-validation-for="Message.Attachment" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to Inbox</a>
+</div>
+@section Scripts {
+
+    <script>
+        $("input[name=IdsToAdd]").change(function () {
+            $('#appuser').val($(this).val());
+            $("input[name=IdsToAdd]").not(this).attr('checked', false);
+            $("#app").hide()
+        });
+        $('#add').click(function () {
+            $('#srch').val($("input[name=IdsToAdd]").prop('checked', true).siblings('input[name=itmname]').val());
+
+            $('#users').hide();
+            $(this).hide();
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+
+            //plugins: "table,contextmenu,paste,-externalplugin"
+
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

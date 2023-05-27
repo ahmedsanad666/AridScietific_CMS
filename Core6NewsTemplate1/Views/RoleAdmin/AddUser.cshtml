@@ -1,0 +1,15 @@
+﻿@model WebOS.Models.AccountViewModels.RoleModificationModel
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+
+<div class="bg-primary panel-body"><h4>إضافة مستخدم</h4></div>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form class="mb-3" asp-action="AddUser" method="post">
+    <select asp-for="RoleName" class="form-control" asp-items="ViewBag.RoleAdminId"></select>
+    <input placeholder="أدخل ال id  الخاص بالمستخدم هنا" asp-for="UserId" class="form-control" />
+    <button type="submit" class="btn btn-success rounded-0">إضافة</button>
+    <a asp-action="Index" class="btn btn-secondary rounded-0">إلغاء</a>
+</form>
+</div>

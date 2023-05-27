@@ -1,0 +1,72 @@
+﻿@model IEnumerable<WebOS.Models.HomeCard>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>إدارة البطاقات في الواجهة</h4>
+
+<p>
+    <a class="btn btn-success rounded-0" asp-action="Create">إضافة بطاقة</a>
+</p>
+<table class="table table-responsive bg-white">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.indx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UrlText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Image)*@
+                <img height="100" width="100" src="~/Pictures/@item.Image" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.indx)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id"><span class="fa fa-edit"></span></a> 
+                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a>*@ 
+                <a asp-action="Delete" asp-route-id="@item.Id"><span class="text-danger fa fa-trash"></span></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

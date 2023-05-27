@@ -1,0 +1,40 @@
+﻿@model WebOS.Models.City
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h4>التعديل على المدينة "@Model.ArCityName"</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="ArCityName" class="control-label"></label>
+                <input asp-for="ArCityName" class="form-control" />
+                <span asp-validation-for="ArCityName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnCityName" class="control-label"></label>
+                <input asp-for="EnCityName" class="form-control" />
+                <span asp-validation-for="EnCityName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="حفظ" class="btn rounded-0 btn-success" />
+                <a class="btn btn-primary rounded-0" asp-action="Index" asp-route-cid="@Model.CountryId">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

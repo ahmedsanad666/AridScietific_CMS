@@ -1,0 +1,59 @@
+﻿@model WebOS.Models.NavMenu
+
+@{
+    ViewData["Title"] = "Create";
+}
+<partial name="_ViewHeader" />
+
+<partial name="_ViewHeader" />
+<div class="px-5">
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnName" class="control-label"></label>
+                <input asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="indx" class="control-label"></label>
+                <input asp-for="indx" class="form-control" />
+                <span asp-validation-for="indx" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="NavMenuPosision" class="control-label"></label>
+                <select asp-for="NavMenuPosision" class="form-control" asp-items="@Html.GetEnumSelectList<NavMenuPosision>()" ></select>
+                <span asp-validation-for="NavMenuPosision" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

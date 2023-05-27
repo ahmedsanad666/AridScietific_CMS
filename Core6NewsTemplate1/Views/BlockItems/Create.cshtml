@@ -1,0 +1,63 @@
+﻿@model WebOS.Models.BlockItem
+
+@{
+    ViewData["Title"] = "إضافة عنصر جديد";
+}
+
+
+<h4>إضافة عنصر جديد</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="BlockId" class="control-label"></label>
+                <select asp-for="BlockId" class="form-control" asp-items="ViewBag.BlockId"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3" id="img">
+                <label asp-for="Image" class="control-label"></label>*<br />
+                <img height="300" id="img1" class="img-rounded center-block" src="" />
+                <input required type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                <input placeholder="هذا الحقل ضروري" readonly asp-for="Image" id="fileinput" class="form-control input-sm" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="link" class="control-label"></label>
+                <input asp-for="link" class="form-control" />
+                <span asp-validation-for="link" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="إضافة" class="btn btn-success rounded-0" />
+                <a class="btn btn-primary rounded-0" asp-action="Index" asp-route-id="@Context.Request.Query["bid"]">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+        $(document).ready(function () {
+            $('#img1').hide();
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    $('#img1').fadeIn();
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+</script>
+}

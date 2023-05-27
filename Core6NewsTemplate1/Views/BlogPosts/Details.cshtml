@@ -1,0 +1,346 @@
+﻿@model WebOS.Models.BlogViewModel
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@{
+    ViewData["Title"] = "" + @Model.BlogPost.Title;
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+<link rel="stylesheet" type="text/css" href="/css/slick-theme.css">
+<partial name="_ViewHeader" />
+
+<!-- Topbar Start -->
+<!-- Navbar End -->
+<!-- Breadcrumb Start -->
+
+
+<div class="container-fluid">
+    <div class="container">
+        <nav class="breadcrumb bg-transparent m-0 p-0">
+            <a class="breadcrumb-item" asp-action="Index" asp-controller="Home">@Localizer["Home"] / </a>
+            @if (culture.Name == "en")
+            {
+                <a class="breadcrumb-item" asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@Model.BlogPost.BlogTaxonomyId"> @Model.BlogPost.BlogTaxonomy.EnName</a>
+                <span class="breadcrumb-item active">@Model.BlogPost.EnTitle</span>
+            }
+            else
+            {
+                <a class="breadcrumb-item" asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@Model.BlogPost.BlogTaxonomyId"> @Model.BlogPost.BlogTaxonomy.Name</a>
+                <span class="breadcrumb-item active">@Model.BlogPost.Title</span>
+            }
+        </nav>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- News With Sidebar Start -->
+<div class="container-fluid py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- News Detail Start -->
+                <div class="position-relative mb-3">
+                    @*<img class="img-fluid w-100" src="/Pictures/@Model.BlogPost.Image" style="object-fit: cover;">*@
+                    @*                        <div id="iframediv"></div>
+                    *@
+                    <section class="regular slider">
+                        <div>
+                            <img style="cursor:pointer" class="slider-img" src="/Pictures/@Model.BlogPost.Image">
+                        </div>
+                        @foreach (var item in Model.BlogPostImages)
+                        {
+                            <div>
+                                <img style="cursor:pointer" class="slider-img" src="/Pictures/@item.Image">
+                            </div>
+                        }
+                    </section>
+                    @if (culture.Name == "en")
+                    {
+                        <div class="overlay position-relative bg-light">
+
+                            <div>
+                                <h3 class="mb-3">@Model.BlogPost.EnTitle</h3>
+                                <p>
+                                    @Html.Raw(Model.BlogPost.EnBody);
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="overlay position-relative bg-light">
+
+                            <div>
+                                <h3 class="mb-3">@Model.BlogPost.Title</h3>
+                                <p>
+                                    @Html.Raw(Model.BlogPost.Body);
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- News Detail End -->
+
+
+            </div>
+
+            <div class="col-lg-4 pt-3 pt-lg-0">
+
+                @if (User.IsInRole(RoleName.Admins))
+                {
+                    <a title="اضافة صور" asp-action="Index" asp-controller="BlogPostImages" asp-route-postid="@Model.BlogPost.Id"><span class="text-warning fa fa-list"></span></a>
+                }
+                <!-- Social Follow Start -->
+                <div class="pb-3">
+                    <div class="bg-light py-2 px-4 mb-3">
+                        <h3 class="m-0">@Localizer["Keep In Touch"]</h3>
+                    </div>
+                    <div class="d-flex mb-3">
+                        @if (@Model.SystemSettings.FB != null)
+                        {
+                            <a href="@Model.SystemSettings.FB" class="d-block w-50 py-2 px-3 text-white text-decoration-none mr-2" style="background: #39569E;">
+                                <small class="fab fa-facebook-f mr-2"></small>
+                            </a>
+                        }
+                        @if (@Model.SystemSettings.Twitter != null)
+                        {
+                            <a href="@Model.SystemSettings.Twitter" class="d-block w-50 py-2 px-3 text-white text-decoration-none ml-2" style="background: #52AAF4;">
+                                <small class="fab fa-twitter mr-2"></small>
+                            </a>
+                        }
+                    </div>
+                    <div class="d-flex mb-3">
+                        @if (@Model.SystemSettings.Linkedin != null)
+                        {
+
+                            <a href="@Model.SystemSettings.Linkedin" class="d-block w-50 py-2 px-3 text-white text-decoration-none mr-2" style="background: #0185AE;">
+                                <small class="fab fa-linkedin-in mr-2"></small>
+                            </a>
+                        }
+                        @if (@Model.SystemSettings.Instagram != null)
+                        {
+                            <a href="@Model.SystemSettings.Instagram" class="d-block w-50 py-2 px-3 text-white text-decoration-none ml-2" style="background: #C8359D;">
+                                <small class="fab fa-instagram mr-2"></small>
+                            </a>
+                        }
+                    </div>
+                    <div class="d-flex mb-3">
+                        @if (@Model.SystemSettings.Youtube != null)
+                        {
+
+                            <a href="@Model.SystemSettings.Youtube" class="d-block w-50 py-2 px-3 text-white text-decoration-none mr-2" style="background: #DC472E;">
+                                <small class="fab fa-youtube mr-2"></small>
+                            </a>
+                        }
+                        @*                        <a href="#" class="d-block w-50 py-2 px-3 text-white text-decoration-none ml-2" style="background: #1AB7EA;">
+                        <small class="fab fa-vimeo-v mr-2"></small>
+                        </a>
+                        *@
+                    </div>
+                </div>
+                <!-- Social Follow End -->
+                <!-- Newsletter Start -->
+                <!-- Newsletter End -->
+                <!-- Ads Start -->
+                <div class="mb-3 pb-3">
+                    <a href=""><img class="img-fluid" src="img/news-500x280-4.jpg" alt=""></a>
+                </div>
+                <!-- Ads End -->
+                <!-- Popular News Start -->
+                <div class="pb-3">
+                    <div class="bg-light py-2 px-4 mb-3">
+                        <h3 class="m-0">@Localizer["Latest News"]</h3>
+                    </div>
+                    @if (culture.Name == "en")
+                    {
+                        @foreach (var item in Model.FeaturedBlogPosts)
+                        {
+                            <div class="d-flex mb-3">
+                                <img src="/Pictures/@item.Image" style="width: 100px; height: 100px; object-fit: cover;">
+                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
+                                    <div class="mb-1" style="font-size: 13px;">
+                                        <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id">@item.BlogTaxonomy.EnName</a>
+                                        <span class="px-1">/</span>
+                                        <span>@item.PostDateTime.ToShortDateString()</span>
+                                    </div>
+                                    <a class="h6 m-0" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id">@Common.substringc(item.EnTitle,0,50)</a>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.FeaturedBlogPosts)
+                        {
+                            <div class="d-flex mb-3">
+                                <img src="/Pictures/@item.Image" style="width: 100px; height: 100px; object-fit: cover;">
+                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
+                                    <div class="mb-1" style="font-size: 13px;">
+                                        <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id">@item.BlogTaxonomy.Name</a>
+                                        <span class="px-1">/</span>
+                                        <span>@item.PostDateTime.ToShortDateString()</span>
+                                    </div>
+                                    <a class="h6 m-0" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@item.Id">@Common.substringc(item.Title,0,50)</a>
+                                </div>
+                            </div>
+                        }
+                    }
+
+
+                </div>
+                <!-- Popular News End -->
+                <!-- Tags Start -->
+                <div class="pb-3">
+                    <div class="bg-light py-2 px-4 mb-3">
+                        <h3 class="m-0">@Localizer["Categories"]</h3>
+                    </div>
+                    <div class="d-flex flex-wrap m-n1">
+                        @if (culture.Name == "en")
+                        {
+                            @foreach (var item in Model.BlogTaxonomies)
+                            {
+                                <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id" class="btn btn-sm btn-outline-primary m-1">@item.EnName</a>
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.BlogTaxonomies)
+                            {
+                                <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id" class="btn btn-sm btn-outline-primary m-1">@item.Name</a>
+                            }
+                        }
+
+                    </div>
+                </div>
+                <!-- Tags End -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="slider-img-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog " style="width:fit-content">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*                <h5 class="modal-title">Modal title</h5>
+                *@@*                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                *@
+            </div>
+            <div class="modal-body">
+                <img style="max-width:100%;" class="d-flex flex-wrap" id="model-img" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["close"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+<p id="pdffile">@Model.BlogPost.File</p>
+
+<div id="example1"></div>
+<style>
+    .pdfobject-container { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
+</style>
+@section scripts{
+    @if (Model.BlogPost.IsPdf)
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js"></script>
+        <script>PDFObject.embed("/Files/"+$("#pdffile").html(), "#example1");</script>
+    }
+    <script type="text/javascript" src="http://github.com/malsup/media/raw/master/jquery.media.js?v0.92"></script>
+    <script type="text/javascript" src="/js/jquery.media.js"></script>
+    <script>
+        $("img").addClass("img-fluid")
+        $("iframe").addClass("embed-responsive-item");
+        $("iframe").attr("width", "100%");
+    </script>
+    <script>
+        $('a.media').media({ width: 400, height: 300, autoplay: true });
+    </script>
+    <script>
+        $(".slider-img").click(function() {
+            $("#model-img").attr("src", $(this).attr("src"));
+            $("#slider-img-modal").modal("show");
+        });
+    </script>
+    @if (culture.Name == "en")
+    {
+        <script>
+            $(".regular").slick({
+                centerMode: true,
+                rtl: false,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                centerPadding: '60px',
+                slidesToShow: 2,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            arrows: false,
+                            centerMode: true,
+                            centerPadding: '40px',
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            arrows: false,
+                            centerMode: true,
+                            centerPadding: '40px',
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            $(".regular").slick({
+                centerMode: true,
+                rtl: true,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                centerPadding: '60px',
+                slidesToShow: 2,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            arrows: false,
+                            centerMode: true,
+                            centerPadding: '40px',
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            arrows: false,
+                            centerMode: true,
+                            centerPadding: '40px',
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        </script>
+    }
+    <script>
+        $(document).ready(function() {
+            $('.youtube').html(function(i, v) {
+                // check for an instance of 'watch?v='
+                if (v.indexOf('watch?v=') !== -1) {
+                    var id = v.split('watch?v=')[1]; // get the id so you can add to iframe
+                    $("#iframediv").append('<iframe class="w-100" height="300" src="https://www.youtube.com/embed/' + id + "?wmode=opaque" + '" frameborder="0" allowfullscreen></iframe>');
+                } else {
+                    // return full url as string if not a youtube
+                    return v;
+                }
+            });
+        });
+    </script>
+    }

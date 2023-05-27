@@ -1,0 +1,813 @@
+﻿@using System.Text.RegularExpressions
+@model BlogViewModel
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "الرئيسة";
+    var culture = System.Globalization.CultureInfo.CurrentCulture;
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+<script src="/js/jquery.counterup.min.js"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+        $('.counter').counterUp({
+            delay: 20,
+            time: 2000
+        });
+    });
+</script>
+
+<!-- Carousel Start -->
+<div class="container-fluid">
+    <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var item in ViewBag.Sliders)
+            {
+                @if (culture.Name == "en")
+                {
+                    <div class="carousel-item">
+                        <img class="w-100" src="/Pictures/@item.Image" alt="Image">
+                        <div class="carousel-caption">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-7 pt-5">
+                                        <h1 class="display-4 text-white mb-3 animated slideInDown">@item.EnTitle</h1>
+                                        <p class="fs-5 text-white-50 mb-5 animated slideInDown">@item.EnSubTitle</p>
+                                        <a class="btn btn-primary py-2 px-3 animated slideInDown" href="@item.Url">
+                                            @item.EnUrlText
+                                            <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        <img class="w-100" src="/Pictures/@item.Image" alt="Image">
+                        <div class="carousel-caption">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-7 pt-5">
+                                        <h1 class="display-4 text-white mb-3 animated slideInDown">@item.Title</h1>
+                                        <p class="fs-5 text-white-50 mb-5 animated slideInDown">@item.SubTitle</p>
+                                        <a class="btn btn-primary py-2 px-3 animated slideInDown" href="@item.Url">
+                                            @item.UrlText
+                                            <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!-- Carousel End -->
+<!-- About Start -->
+
+
+
+<section class="aboutUs">
+
+    @*comming soon*@
+
+    <div class="comming-soon d-none d-md-block">
+
+        <div class="comming-soon-out ">
+            <div class="row">
+            
+
+            </div>
+        </div>
+    </div>
+<div class="aboutUs_vedio d-flex flex-md-row flex-column ">
+    <div class="text-center aboutUsP  w-100">
+        @if (culture.Name == "en")
+        {
+
+
+            <h2>About Us</h2>
+            @if (@ViewBag.SystemSetting.EnAbout != null)
+            {
+                <p>@ViewBag.SystemSetting.EnAbout</p>
+            }
+
+        }
+        else
+        {
+
+            <h2>حول موقعنا </h2>
+
+
+            @if (@ViewBag.SystemSetting.About != null)
+            {
+                <p>@ViewBag.SystemSetting.About</p>
+
+            }
+
+
+
+        }
+
+    </div>
+    <div class="video w-100">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/YlQcXFSYit8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- About End -->
+<!-- Blogs Start -->
+
+
+
+
+
+
+
+<section class="posts py-3">
+    @if (culture.Name == "en")
+    {
+
+        <h1 class="container post_header"> <i class="bi bi-calendar2-event mx-3"></i> Posts & Events</h1>
+    }
+    else
+    {
+
+        <h2 class="container post_header"> <i class="bi bi-calendar2-event mx-3"></i> مقالات و احداث </h2>
+
+    }
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mx-4 section-tittle mb-30">
+                <div class="d-flex align-items-center rounded-pill  text-primary py-1 px-3 mb-3">
+                    <a asp-action="Wall" asp-controller="BlogPosts">@Localizer["Top News (View All)"]</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">@Localizer["Categories"]</a>
+                        @if (culture.Name == "en")
+                        {
+                            <div class="dropdown-menu m-0">
+                                @foreach (var item in ViewBag.Taxonomies)
+                                {
+                                    <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id" class="dropdown-item">@item.EnName</a>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="dropdown-menu m-0">
+                                @foreach (var item in ViewBag.Taxonomies)
+                                {
+                                    <a asp-action="TaxonomyIndex" asp-controller="BlogPosts" asp-route-taxonomyid="@item.Id" class="dropdown-item">@item.Name</a>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="owl-carousel owl-theme">
+
+        @foreach (var el in ViewBag.Blogs)
+        {
+
+            @if (culture.Name == "en")
+            {
+
+                <div class="item">
+                    <div class="card">
+                        <img src="/Pictures/@el.Image" alt="">
+                        <div class="text-container">
+                            <div class="d-flex align-items-start flex-column">
+
+                                <span class="date"> <i class="bi bi-clock mx-2"></i>@el.PostDateTime.ToLongDateString()</span>
+                                <h4>@el.EnTitle</h4>
+                                @*<a asp-route-id="@el.Id" asp-action="Details" asp-controller="BlogPosts">@Common.substringc(el.EnTitle,0,50)</a>*@
+                                <a class="readMore" asp-route-id="@el.Id" asp-action="Details" asp-controller="BlogPosts">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="item">
+                    <div class="card">
+                        <img src="/Pictures/@el.Image" alt="">
+                        <div class="text-container">
+                            <div class="d-flex align-items-start flex-column">
+
+                                <span class="date"> <i class="bi bi-clock mx-2"></i>@el.PostDateTime.ToLongDateString()</span>
+                                <h4>@el.Title</h4>
+                                @*<h3>@el.BlogTaxonomy.Name</h3>*@
+                                <a class="readMore" asp-route-id="@el.Id" asp-action="Details" asp-controller="BlogPosts">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+
+
+    </div>
+</section>
+
+
+<!-- Blogs end -->
+<!-- Blogs end -->
+<!-- Causes Start -->
+<div class="container-xxl bg-light my-5 ">
+    <div class="container ">
+        <div class="  mb-5 wow fadeInUp" data-wow-delay="0.1s" >
+            @*<div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">@Localizer["Opended Projects"]</div>*@
+            <h1 class="display-6 post_header mb-5"><i class="bi bi-calendar2-event mx-3"></i> @Localizer["Our Projects"]</h1>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @foreach (var item in ViewBag.CausesCategories)
+            {
+                @foreach (var cause in ((IEnumerable<dynamic>)ViewBag.Causes).Where(b => b.CauseCategoryId == item.Id).Take(1))
+                {
+                    @if (culture.Name == "en")
+                    {
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="causes-item d-flex flex-column bg-white border-top border-5 border-primary rounded-top overflow-hidden h-100">
+                                <div class="text-center p-4 pt-0">
+                                    <div class="d-inline-block bg-primary text-white rounded-bottom fs-5 pb-1 px-3 mb-4">
+                                        <small>@cause.CauseCategory.EnTitle</small>
+                                    </div>
+                                    <h5 class="mb-3">@cause.EnTitle</h5>
+                                    <p>@cause.EnBriefDescription</p>
+                                    @*<div class="causes-progress bg-light p-3 pt-2">
+                        <div class="d-flex justify-content-between">
+                        <p class="text-dark">$10,000 <small class="text-body">Goal</small></p>
+                        <p class="text-dark">$9,542 <small class="text-body">Raised</small></p>
+                        </div>
+                        <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                        <span>90%</span>
+                        </div>
+                        </div>
+                        </div>*@
+                                </div>
+                                <div class="position-relative mt-auto">
+                                    <img class="img-fluid" src="/Pictures/@cause.Image" alt="">
+                                    <div class="causes-overlay">
+                                        <a class="btn btn-outline-primary" asp-action="Index" asp-controller="CauseCategories" asp-route-id="@cause.CauseCategoryId">
+                                            @Localizer["See All"]
+                                            <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="causes-item d-flex flex-column bg-white border-top border-5 border-primary rounded-top overflow-hidden h-100">
+                                <div class="text-center p-4 pt-0">
+                                    <div class="d-inline-block bg-primary text-white rounded-bottom fs-5 pb-1 px-3 mb-4">
+                                        <small>@cause.CauseCategory.Title</small>
+                                    </div>
+                                    <h5 class="mb-3">@cause.Title</h5>
+                                    <p>@cause.BriefDescription</p>
+                                    @*<div class="causes-progress bg-light p-3 pt-2">
+                        <div class="d-flex justify-content-between">
+                        <p class="text-dark">$10,000 <small class="text-body">Goal</small></p>
+                        <p class="text-dark">$9,542 <small class="text-body">Raised</small></p>
+                        </div>
+                        <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                        <span>90%</span>
+                        </div>
+                        </div>
+                        </div>*@
+                                </div>
+                                <div class="position-relative mt-auto">
+                                    <img class="img-fluid" src="/Pictures/@cause.Image" alt="">
+                                    <div class="causes-overlay">
+                                        <a class="btn btn-outline-primary" asp-action="Index" asp-controller="CauseCategories" asp-route-id="@cause.CauseCategoryId">
+                                            @Localizer["See All"]
+                                            <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+
+        </div>
+    </div>
+</div>
+<!-- Causes End -->
+<!-- Statictics start -->
+@*
+    out vision section
+*@
+@if (culture.Name == "en")
+{
+
+    <h2 class="my-4 post_header container text-end"> <i class="bi bi-calendar2-event mx-3"></i>  Our Statistics</h2>
+}
+else
+{
+    <h2 class="my-4 post_header container text-end"> <i class="bi bi-calendar2-event mx-3"></i>  الاحصائيات </h2>
+
+
+}
+<section class="Statistics py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class=" col-lg-3 col-sm-6  col-12">
+                <div class="d-flex flex-column justify-content-between">
+                    <h3 class="text-center counter text-white">@ViewBag.SystemSetting.VolunteersNumber</h3>
+                    <h2 class="text-center  text-white">@Localizer["Volunteers"]</h2>
+                    <span><i class="fa-solid fa-handshake-angle"></i></span>
+                </div>
+            </div>
+            @*...............*@
+
+            <div class=" col-lg-3 col-sm-6  col-12">
+                <div class="d-flex flex-column justify-content-between">
+                    <h3 class="text-center counter text-white">@ViewBag.SystemSetting.EmployeesNumber</h3>
+                    <h2 class="text-center  text-white">@Localizer["Employees"]</h2>
+                    <span><i class="fa-solid fa-globe"></i></span>
+                </div>
+            </div>
+            @*...............*@
+            <div class=" col-lg-3 col-sm-6  col-12">
+                <div class="d-flex flex-column justify-content-between">
+                    <h3 class="text-center counter text-white">@ViewBag.SystemSetting.BeneficiariesNumber</h3>
+                    <h2 class="text-center  text-white">@Localizer["Beneficiaries"]</h2>
+                    <span><i class="fa-solid fa-handshake-angle"></i></span>
+                </div>
+            </div>
+            @*...............*@<div class=" col-lg-3 col-sm-6  col-12">
+                <div class="d-flex flex-column justify-content-between">
+                      <h3 class="text-center counter text-white">@ViewBag.SystemSetting.ProjectsNumber</h3>
+                <h2 class="text-center  text-white">@Localizer["Projects"]</h2>
+                    <span><i class="fa-solid fa-list-check"></i></span>
+                </div>
+            </div>
+            @*...............*@
+        </div>
+    </div>
+
+</section>
+
+<!-- Statictics end -->
+<!-- Service Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class=" mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" >
+            @*<div class="d-inline-block rounded-pill   py-1 px-3 mb-3">@Localizer["Services"]</div>*@
+            <h1 class="display-6 mb-5 post_header"><i class="bi bi-calendar2-event mx-3"></i> @Localizer["Our Services"]</h1>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @foreach (var item in ViewBag.Services)
+            {
+                if (culture.Name == "en")
+                {
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="service-item bg-white text-center h-100 p-4 p-xl-5">
+                            <img class="img-fluid mb-4" src="/Pictures/@item.Image" alt="">
+                            <h4 class="mb-3">@item.EnTitle</h4>
+                            <p class="mb-4">@Common.substringc(item.EnBriefDescription,0,20)</p>
+                            <a class="btn btn-outline-primary px-3" asp-action="Details" asp-controller="Services" asp-route-id="@item.Id">
+                                @Localizer["Know More"]
+                                <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
+                                    <i class="fa fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="service-item bg-white text-center h-100 p-4 p-xl-5">
+                            <img class="img-fluid mb-4" src="/Pictures/@item.Image" alt="">
+                            <h4 class="mb-3">@item.Title</h4>
+                            <p class="mb-4">@Common.substringc(item.BriefDescription,0,20)</p>
+                            <a class="btn btn-outline-primary px-3" asp-action="Details" asp-controller="Services" asp-route-id="@item.Id">
+                                @Localizer["Know More"]
+                                <div class="d-inline-flex btn-sm-square bg-primary text-white rounded-circle ms-2">
+                                    <i class="fa fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+
+
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+<!-- Donate Start -->
+<@*div class="container-fluid donate my-5 py-5" data-parallax="scroll" data-image-src="/img/carousel-2.jpg">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">@Localizer["Donate Now"]</div>
+                <h1 class="display-6 text-white mb-5">@Localizer["Thanks For The Results Achieved With You"]</h1>
+            </div>
+
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <div class="h-100 bg-white p-5">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-light border-0" id="name" placeholder="Your Name">
+                                    <label for="name">@Localizer["Your Name"] </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control bg-light border-0" id="email" placeholder="Your Email">
+                                    <label for="email">@Localizer["Email"]</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="btn-group d-flex justify-content-around">
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" checked>
+                                    <label class="btn btn-light py-3" for="btnradio1">$10</label>
+
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2">
+                                    <label class="btn btn-light py-3" for="btnradio2">$20</label>
+
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3">
+                                    <label class="btn btn-light py-3" for="btnradio3">$30</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary px-5" style="height: 60px;">
+                                    @Localizer["Donate Now"]
+                                    <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>*@
+<!-- Donate End -->
+<!-- Team Start -->
+@if (((IEnumerable<dynamic>)ViewBag.Team).Count() > 0)
+{
+
+
+
+    
+<section class="ourTeam ">
+    @if(culture.Name == "en")
+    {
+
+        <h1 class="container post_header"> <i class="bi bi-calendar2-event me-3"></i>Team Members</h1>
+    }
+    else
+    {
+        <h1 class="container post_header"> <i class="bi bi-calendar2-event me-3"></i>اعضاء الفريق</h1>
+    }
+            
+        <div class="owl-carousel owl-theme">
+            @foreach (var el in ViewBag.Team)
+        {
+            
+            @if(culture.Name == "en")
+            {
+                
+
+            <div class="item">
+
+                <div class="card">
+                                   <img class="img-fluid" src="/Pictures/@el.Image" alt="">
+           
+                    <div class="text-container">
+                        <div class="d-flex align-items-start flex-column">
+
+                           
+                            <h3>@el.EnName</h3>
+                            <a href="#" class="mt-3 readMore">More Details</a>
+                            <ul class="py-3 d-flex justify-content-between align-items-center">
+                                <li>
+                                    <a href="@el.FB">
+                                    <i class="bi bi-facebook"></i>
+                                    </a>
+                                </li> <li>
+                                                <a href="@el.Twitter">
+                                    <i class="bi bi-twitter"></i>
+                                    </a>
+                                </li>
+                               <li>
+                                                <a href="@el.Instagram">
+                                    <i class="bi bi-instagram"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            }
+            else
+            {
+
+                <div class="item">
+
+                    <div class="card">
+                               <img class="img-fluid" src="/Pictures/@el.Image" alt="">
+                        <div class="text-container">
+                            <div class="d-flex align-items-start flex-column">
+
+
+                                            <h3>@el.EnName</h3>
+                                <a href="#" class="mt-3 readMore">المزيد</a>
+                                <ul class="py-3 d-flex justify-content-between align-items-center">
+                                    <li>
+                                        <a href="@el.FB">
+                                            <i class="bi bi-facebook"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@el.Twitter">
+                                                        <i class="bi bi-Twitter"></i>
+                                        </a>
+                                    </li>
+                                   
+                                    <li>
+                                                    <a href="@el.Instagram">
+                                            <i class="bi bi-instagram"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+
+
+
+
+
+    </section>
+
+
+}
+<!-- Team End -->
+<!-- Testimonial Start -->
+@*@if (((IEnumerable<dynamic>)ViewBag.Testomonials).Count() > 0)
+{
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">@Localizer["Testimonial"]</div>
+                <h1 class="display-6 mb-5">@Localizer["Trusted By Thousands organizations"]</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+                @foreach (var item in ViewBag.Testomonials)
+                {
+                    if (culture.Name == "en")
+                    {
+                        <div class="testimonial-item text-center">
+                            <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="/Pictures/@item.Image" style="width: 100px; height: 100px;">
+                            <div class="testimonial-text rounded text-center p-4">
+                                <p>@item.EnBriefDescription</p>
+                                <h5 class="mb-1">@item.EnName</h5>
+                                <span class="fst-italic">@item.EnJob</span>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="testimonial-item text-center">
+                            <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="/Pictures/@item.Image" style="width: 100px; height: 100px;">
+                            <div class="testimonial-text rounded text-center p-4">
+                                <p>@item.BriefDescription</p>
+                                <h5 class="mb-1">@item.Name</h5>
+                                <span class="fst-italic">@item.Job</span>
+                            </div>
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}*@
+
+
+
+<div class="container-xxl">
+
+
+    <section class="ourTeam ">
+        @if (culture.Name == "en")
+        {
+
+                <h1 class="container post_header"> <i class="bi bi-calendar2-event me-3"></i>Donners</h1>
+        }
+        else
+        {
+            <h1 class="container post_header"> <i class="bi bi-calendar2-event me-3"></i>الداعمين</h1>
+        }
+
+        <div class="owl-carousel owl-theme">
+          
+             
+
+
+                @foreach (var item in ViewBag.Testomonials)
+                {
+                    <div class="item">
+                    <div class="slide"><img src="/Pictures/@item.Image"></div>
+                      
+                        </div>
+                }
+             
+
+            
+           
+    </div>
+
+
+
+
+
+
+    </section>
+
+
+    
+</div>
+<!-- Testimonial End -->
+@section scripts{
+
+    <script>
+        $(".carousel-item").first().addClass("active");
+    </script>
+    <script src="/js/jquery.ticker.js"></script>
+    <script>
+        $(function() {
+            $('.ticker').ticker();
+        });
+    </script>
+    @if (culture.Name == "en")
+    {
+
+        <script>
+            $('.customer-logos').slick({
+                slidesToShow: 6,
+                rtl: false,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1500,
+                arrows: false,
+                dots: false,
+                pauseOnHover: false,
+                responsive: [{
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                }, {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                }]
+            });
+        </script>
+        <script>
+            $('.team-members').slick({
+                slidesToShow: 3,
+                rtl: false,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1500,
+                arrows: false,
+                dots: false,
+                pauseOnHover: false,
+                responsive: [{
+                    breakpoint: 868,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                }, {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }]
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            $('.customer-logos').slick({
+                slidesToShow: 6,
+                rtl: true,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1500,
+                arrows: false,
+                dots: false,
+                pauseOnHover: false,
+                responsive: [{
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                }, {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                }]
+            });
+        </script>
+        <script>
+            $('.team-members').slick({
+                slidesToShow: 3,
+                rtl: true,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1500,
+                arrows: false,
+                dots: false,
+                pauseOnHover: false,
+                responsive: [{
+                    breakpoint: 868,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                }, {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }]
+            });
+        </script>
+    }
+
+}

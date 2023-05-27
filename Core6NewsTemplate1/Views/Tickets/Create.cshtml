@@ -1,0 +1,226 @@
+﻿@model WebOS.Models.Ticket
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>إنشاء تذكرة دعم فني</h4>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="TicketCategoryId" class="control-label"></label>
+                <select asp-for="TicketCategoryId" class="form-control" asp-items="ViewBag.TicketCategoryId"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Body" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Body, new { rows = 10, cols = 50, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+            <div class="addedfiles">
+                <div class="mb-3 border border-dark drop-zone">
+                    <span class="fa fa-download fa-2x pull-right"></span>
+                    <span class="drop-zone__prompt font-weight-bold">إسحب الملف إلى هنا أو أُنقر للإختيار يدوياً</span>
+                    <input asp-for="File" type="file" name="myfile1" accept=".pdf,.docx,.doc" class="drop-zone__input">
+                    @*<div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="رفع الملف" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">رفع الملف</span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Message.Attachment" class="text-danger"></span>*@
+                </div>
+            </div>
+
+
+            <div class="mb-3 mt-2">
+                <input type="submit" value="انشاء" class="btn btn-success rounded-0" />
+                <a class="btn btn-primary rounded-0" asp-action="Index">عرض جميع التذاكر</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+<style>
+    .drop-zone {
+        padding: 25px;
+        /*        width: 678px;
+    */ /*margin-right: 15px;*/
+        cursor: pointer;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .drop-zone--over {
+        border-style: solid;
+    }
+
+    .drop-zone__input {
+        display: none;
+    }
+
+    .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+    }
+
+        .drop-zone__thumb::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 0;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.75);
+            font-size: 14px;
+            text-align: center;
+        }
+</style>
+
+
+
+@section Scripts {
+    <script>
+        function bytesToSize(bytes) {
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            if (bytes == 0) return '0 Byte';
+            var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+        }
+    </script>
+
+    <script>
+        $('.addeddiv').hide()
+        document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+            const dropZoneElement = inputElement.closest(".drop-zone");
+
+            dropZoneElement.addEventListener("click", (e) => {
+                inputElement.click();
+            });
+
+            inputElement.addEventListener("change", (e) => {
+                if (inputElement.files.length) {
+                    updateThumbnail(dropZoneElement, inputElement.files[0]);
+                }
+            });
+            dropZoneElement.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZoneElement.classList.add("drop-zone--over");
+            });
+
+            ["dragleave", "dragend"].forEach((type) => {
+                dropZoneElement.addEventListener(type, (e) => {
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+            dropZoneElement.addEventListener("drop", (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files.length) {
+                    inputElement.files = e.dataTransfer.files;
+                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                }
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
+        });
+
+        /**
+            * Updates the thumbnail on a drop zone element.
+            *
+            * @@param {HTMLElement} dropZoneElement
+            * @@param {File} file
+            */
+        function updateThumbnail(dropZoneElement, file) {
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+            $('.addedfile').parent().remove();
+            $(".addedfiles").append('<div class=""><div class="border border-dark addeddiv bg-white drop-zone p-2"><span class="col-lg-8 addedfile">' + (file.name.length > 30 ? '' + file.name.substring(0, 29) + '' : '' + file.name + '') + '</span><span> (حجم الملف:"' + bytesToSize(file.size) + ')</span><span class="fileeditedname" id="' + file.type + '"></span><a class="btn-sm btn-danger text-white deletefile rounded-0"><span class="fa fa-times"></span> حذف</a></div>')
+
+            // First time - remove the prompt
+            //if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+            //    dropZoneElement.querySelector(".drop-zone__prompt").remove();
+            //}
+
+            // First time - there is no thumbnail element, so lets create it
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+                $('.addedfile').append(thumbnailElement)
+            }
+
+            thumbnailElement.dataset.label = file.name;
+
+            // Show thumbnail for image files
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                };
+            } else {
+                thumbnailElement.style.backgroundImage = null;
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).on("click", ".deletefile", function () {
+            var filename = $('.addedfile').text();
+            $(this).parent().remove()
+            $($('[name="file"]')).val('');
+
+        })
+    </script>
+
+
+    @*<script>
+        tinymce.init({
+            selector: 'textarea',
+
+
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link,image,media,table",
+
+            //menubar: "insert",
+            toolbar: "link,image,media,table",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+
+            mode: "textareas",
+
+            //plugins: "table,contextmenu,paste,-externalplugin"
+
+        });</script>*@
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

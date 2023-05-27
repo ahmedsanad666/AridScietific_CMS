@@ -1,0 +1,148 @@
+﻿@model WebOS.Models.MessageViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@{
+    ViewData["Title"] = "الرسائل";
+}                @*@if (Model.Messages.Where(n => n.FromApplicationUserId != currentUser.Id).Where(n => n.IsRead == false || Model.messageReplies.Where(m => m.MessageId == n.Id).Any()).Any())
+    {<span class="noty-manager-bubble" style="margin-left:0px; top: 10px; opacity: 1;">@Model.Messages.Where(n => n.FromApplicationUserId != currentUser.Id).Where(n => n.IsRead == false || Model.messageReplies.Where(m => m.MessageId == n.Id).Any()).Count()</span>}*@
+
+@foreach (var item in Model.Messages.OrderByDescending(m => m.LastActivitydate))
+{
+    try
+    {
+        if ((Model.messageReplies.Where(m => m.MessageId == item.Id).Any()) || (item.IsRead == false && item.FromApplicationUserId != currentUser.Id))
+        {
+            <div class="font-weight-bolder">
+                <div class="noty-manager-list-item noty-manager-list-item-error">
+                    <div class="activity-item text-danger">
+                        <div class="activity">
+                            @if (currentUser.Id == item.FromApplicationUserId)
+                            {
+                                <img onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.ToApplicationUser.ImageProfile)"
+                                     height="40" width="40" class="img-rounded" />
+                            }
+                            else
+                            {
+                                <img onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.FromApplicationUser.ImageProfile)"
+                                     height="40" width="40" class="img-rounded" />
+
+                            }
+                            <a  asp-action="Details" asp-controller="Messages" asp-route-id="@item.Id">@item.Subject</a>
+                            @if (Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Any())
+                            {
+                                @if (Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content != null)
+                                {
+                                    @if (Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content.Length > 90)
+                                    {
+                                        <span class="">&emsp;&emsp;&emsp;&emsp; @Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content.Substring(0, 90)...</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="">&emsp;&emsp;&emsp;&emsp; @Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content</span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <span>&emsp;&emsp;&emsp;&emsp; @Html.Raw(item.Content)</span>
+                            }
+
+                            <span class="pull-left">@Common.GetDate(item.LastActivitydate)</span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 dropdown-divider"></div>
+        }
+        else
+        {
+            <div style="">
+                <div class="noty-manager-list-item noty-manager-list-item-error">
+                    <div class="">
+                        <div class="activity">
+                            @if (currentUser.Id == item.FromApplicationUserId)
+                            {
+                                <img onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.ToApplicationUser.ImageProfile)"
+                                     height="40" width="40" class="img-rounded" />
+                            }
+                            else
+                            {
+                                <img onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="@Url.Content("~/" + WebOS.Properties.Resources.ProfileImages + "/" + item.FromApplicationUser.ImageProfile)"
+                                     height="40" width="40" class="img-rounded" />
+                            }
+                            <a  asp-action="Details" asp-controller="Messages" asp-route-id="@item.Id">@item.Subject</a>
+                            @if (Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Any())
+                            {
+                                if (Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content != null)
+                                {
+                                    @if (Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content.Length > 90)
+                                    {
+                        <span>&emsp;&emsp;&emsp;&emsp; @Html.Raw(Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content.Substring(0, 90).ToString())...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>&emsp;&emsp;&emsp;&emsp; @Html.Raw(Model.AllMessageReplies.Where(c => c.MessageId == item.Id).Last().Content.ToString())</span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <span>&emsp;&emsp;&emsp;&emsp;@Html.Raw(item.Content)</span>
+                            }
+                            <span class="pull-left">@Common.GetDate(item.LastActivitydate)</span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 dropdown-divider"></div>
+        }
+    }
+    catch (Exception)
+    {
+
+        throw;
+    }
+}
+
+@if (Model.Messages.Count() == 0)
+{
+    <div style=""><div class="noty-manager-list-item noty-manager-list-item-error"><div class="activity-item text-danger">  <div class="activity"> <a name="" class="unreadnotification" href="">لا توجد رسائل</a> <span></span> </div> </div></div></div>
+}
+
+@section scripts{
+    @*<script>
+                /*
+        Notificatiuons Popover TODO
+
+        -Load notifications from JSON
+        - on load set new count to number from DB
+        - after clicking to open notificatuions popover, reset/clear the unread counter to 0
+        -
+
+
+
+        */
+
+
+
+
+
+
+                $(document).ready(function () {
+
+                    $('#notifications').click(function (event) {
+
+                        console.log("Thanks for visiting!");
+
+                        $('#notificationsli').toggleClass('open');
+
+                    });
+
+                });
+
+
+            </script>*@
+}

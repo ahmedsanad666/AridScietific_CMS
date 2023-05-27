@@ -1,0 +1,286 @@
+﻿@model WebOS.Models.TicketViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ApplicationUser currentUser = null;
+    currentUser = await UserManager.GetUserAsync(User);
+}
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>&nbsp;</h2>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-8">
+            <hr />
+            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Ticket.ApplicationUserId"><img class="rounded-circle border border-info p-1" width="40" height="40" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="~/ProfileImages/@Model.Ticket.ApplicationUser.ImageProfile"> <h5 class="d-inline">@Model.Ticket.ApplicationUser.ArName | @Model.Ticket.ApplicationUser.EnName</h5></a>
+            <p class="d-inline" align="left">@Model.Ticket.ApplicationUser.Email | @Model.Ticket.ApplicationUser.PhoneNumber  | @Model.Ticket.ApplicationUser.Balance$ </p>
+            <br />
+            <p>@Html.DisplayFor(model => model.Ticket.Subject) | @Html.DisplayFor(model => model.Ticket.TicketCategory.Name)</p>
+            <br />
+            @Html.Raw(Model.Ticket.Body)
+            <br />
+            @if (Model.Ticket.File != null)
+            {
+                <a class="btn btn-link" target="_blank" href="~/TicketFiles/@Model.Ticket.File"><span class="fa fa-link"></span> تحميل الملف المرفق</a>
+            }
+            @if (await UserManager.IsInRoleAsync(currentUser, RoleName.Admins))
+            {
+                <div>
+                    <a align="left" asp-controller="Tickets" asp-action="Delete" asp-route-id="@Model.Ticket.Id">  <span style="color:orangered" class="fa fa-trash"></span></a>
+                    <a align="left" asp-controller="Tickets" asp-action="Edit" asp-route-id="@Model.Ticket.Id">  <span class="fa fa-edit"></span></a>
+                    @if (Model.Ticket.Status)
+                    {
+                        <a align="left" asp-controller="Tickets" asp-action="Close" asp-route-id="@Model.Ticket.Id">  <span style="color:gray" class="fa fa-times-circle"></span></a>
+                    }
+                    else
+                    {
+                        <span class="badge badge-dark">مغلقة</span>
+                    }
+
+                </div>
+            }
+
+            <hr />
+            <h5>الردود</h5><hr />
+
+            @foreach (var item in Model.TicketReplys.OrderBy(a => a.ReplyDate))
+            {
+                <div class="border border-dark bg-white p-1 mt-1">
+                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.SupportUserId"><img class="rounded-circle border border-info p-1" width="40" height="40" onerror="this.onerror=null;this.src='https://portal.WebOS.my/images/default_small.png';" src="~/ProfileImages/@item.SupportUser.ImageProfile">@item.SupportUser.ArName</a>
+                    <div>
+                        @Html.Raw(item.Body)
+                        <p align="left"> @Html.Raw(item.ReplyDate)</p>
+                        @if (item.File != null)
+                        {
+                            <a style="float:left;color:white" class="btn btn-link" target="_blank" href="~/TicketFiles/@item.File"><span class="fa fa-link"> </span> تحميل الملف المرفق</a>
+                        }
+                    </div>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        currentUser = await UserManager.GetUserAsync(User);
+                    }
+                    @if (await UserManager.IsInRoleAsync(currentUser, RoleName.Admins))
+                    {
+                        <div>
+                            <a align="left" asp-controller="TicketReplies" asp-action="Delete" asp-route-id="@item.Id">  <span style="color:orangered" class="fa fa-trash"></span></a>
+                            <a align="left" asp-controller="TicketReplies" asp-action="Edit" asp-route-id="@item.Id">  <span class="fa fa-edit"></span></a>
+                        </div>
+                    }
+                </div>
+            }
+            <div class="col-sm-12 bg-white border border-dark p-2 mt-2">
+                <form asp-action="Create" asp-controller="TicketReplies" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3" hidden>
+                        <label asp-for="TicketReply.TicketId" class="control-label"></label>
+                        <input asp-for="TicketReply.TicketId" class="form-control" value="@Model.Ticket.Id" />
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea required asp-for="TicketReply.Body" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="TicketReply.Body" class="text-danger"></span>
+                    </div>
+                    @*<div id="filediv" class="mb-3">
+                    <label asp-for="TicketReply.File" class="control-label"></label>
+                    <input type="file" name="myfile1" id="file1" accept=".pdf,.doc,.docx,.xls,.txt,.ppt,.pptx,.jpg,.png" class="btn btn-secondary" />
+                    <span asp-validation-for="TicketReply.File" class="text-danger"></span>
+                    <input asp-for="TicketReply.File" id="fileinput1" class="form-control" />
+                </div>*@
+                    <div class="addedfiles col-sm-12">
+                        <div class="mb-3 border border-dark drop-zone col-sm-12">
+                            <span class="fa fa-download fa-2x pull-right"></span>
+                            <span class="drop-zone__prompt font-weight-bold">إسحب الملف إلى هنا أو أُنقر للإختيار يدوياً</span>
+                            <input asp-for="TicketReply.File" id="file1" type="file" name="myfile1" accept=".pdf,.docx,.doc" class="drop-zone__input">
+                            @*<div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="رفع الملف" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">رفع الملف</span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Message.Attachment" class="text-danger"></span>*@
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-2">
+                        <input type="submit" value="ارسال الرد" class="btn btn-success rounded-0" />
+                    </div>
+                </form>
+            </div>
+            @*@if (User.IsInRole("Admins"))
+        {
+            <a class="btn btn-primary rounded-0 mt-2" asp-controller="Home" asp-action="Control">رجوع</a>
+        }
+        else
+        {*@
+            <a class="btn btn-primary rounded-0 mt-2" asp-action="Index">رجوع</a>
+            @*}*@
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+</div>
+
+<style>
+    .drop-zone {
+        padding: 25px;
+        /*        width: 678px;
+    */ /*margin-right: 15px;*/
+        cursor: pointer;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .drop-zone--over {
+        border-style: solid;
+    }
+
+    .drop-zone__input {
+        display: none;
+    }
+
+    .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+    }
+
+        .drop-zone__thumb::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 0;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.75);
+            font-size: 14px;
+            text-align: center;
+        }
+</style>
+
+@section Scripts {
+    <script>
+        function bytesToSize(bytes) {
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            if (bytes == 0) return '0 Byte';
+            var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+        }
+    </script>
+
+    <script>
+        $('.addeddiv').hide()
+        document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+            const dropZoneElement = inputElement.closest(".drop-zone");
+
+            dropZoneElement.addEventListener("click", (e) => {
+                inputElement.click();
+            });
+
+            inputElement.addEventListener("change", (e) => {
+                if (inputElement.files.length) {
+                    updateThumbnail(dropZoneElement, inputElement.files[0]);
+                }
+            });
+            dropZoneElement.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZoneElement.classList.add("drop-zone--over");
+            });
+
+            ["dragleave", "dragend"].forEach((type) => {
+                dropZoneElement.addEventListener(type, (e) => {
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+            dropZoneElement.addEventListener("drop", (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files.length) {
+                    inputElement.files = e.dataTransfer.files;
+                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                }
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
+        });
+
+        /**
+            * Updates the thumbnail on a drop zone element.
+            *
+            * @@param {HTMLElement} dropZoneElement
+            * @@param {File} file
+            */
+        function updateThumbnail(dropZoneElement, file) {
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+            $('.addedfile').parent().remove();
+            $(".addedfiles").append('<div class=""><div class="border border-dark addeddiv bg-white drop-zone p-2"><span class="col-lg-8 addedfile">' + (file.name.length > 30 ? '' + file.name.substring(0, 29) + '' : '' + file.name + '') + '</span><span> (حجم الملف:"' + bytesToSize(file.size) + ')</span><span class="fileeditedname" id="' + file.type + '"></span><a class="btn-sm btn-danger text-white deletefile rounded-0"><span class="fa fa-times"></span> حذف</a></div>')
+
+            // First time - remove the prompt
+            //if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+            //    dropZoneElement.querySelector(".drop-zone__prompt").remove();
+            //}
+
+            // First time - there is no thumbnail element, so lets create it
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+                $('.addedfile').append(thumbnailElement)
+            }
+
+            thumbnailElement.dataset.label = file.name;
+
+            // Show thumbnail for image files
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                };
+            } else {
+                thumbnailElement.style.backgroundImage = null;
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+            });
+        });
+
+
+        function inyectarTexto(elemento, valor) {
+            var elemento_dom = document.getElementsByName(elemento)[0];
+            if (document.selection) {
+                elemento_dom.focus();
+                sel = document.selection.createRange();
+                sel.text = valor;
+                return;
+            } if (elemento_dom.selectionStart || elemento_dom.selectionStart == "0") {
+                var t_start = elemento_dom.selectionStart;
+                var t_end = elemento_dom.selectionEnd;
+                var val_start = elemento_dom.value.substring(0, t_start);
+                var val_end = elemento_dom.value.substring(t_end, elemento_dom.value.length);
+                elemento_dom.value = val_start + valor + val_end;
+            } else {
+                elemento_dom.value += valor;
+            }
+        }
+    </script>
+
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
